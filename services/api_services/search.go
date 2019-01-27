@@ -6,13 +6,12 @@
 package api_services
 
 import (
-	"showSdk/normalRequest"
-	"log"
 	"reflect"
 	"fmt"
 	"github.com/spf13/cast"
 	"encoding/json"
 	"errors"
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type SearchApiServices struct {
@@ -81,19 +80,21 @@ type SearchRes struct {
 
 func (this *SearchApiServices) GetSearchDataServices() (res SearchRes, err error) {
 	req := normalRequest.ShowapiRequest("http://route.showapi.com/1653-1", appId, appSecret)
-	log.Println(req)
 	t := reflect.TypeOf(this.ReqParams)
 	v := reflect.ValueOf(this.ReqParams)
 
 	for i := 0; i < v.NumField(); i++ {
 		if v.Field(i).CanInterface() {
 			if v.Field(i).CanInterface() {
-				req.AddTextPara(cast.ToString(t.Field(i).Tag), cast.ToString(v.Field(i).Interface()))
+				key := cast.ToString(t.Field(i).Tag.Get("json"))
+				val := cast.ToString(v.Field(i).Interface())
+
+				req.AddTextPara(key, val)
 				fmt.Printf("名字:%s    类型:%s  值:%v -标签:%s \n",
 					t.Field(i).Name,
 					t.Field(i).Type,
 					v.Field(i).Interface(),
-					t.Field(i).Tag)
+					t.Field(i).Tag.Get("json"))
 			}
 		}
 	}

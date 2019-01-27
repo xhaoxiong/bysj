@@ -12,21 +12,28 @@ import (
 
 func main() {
 
-	req := api_services.SearchRequestParams{
-		KeyWord:      "keyWord",
-		Page:         "page",
-		CityName:     "cityName",
-		IDate:        "iDate",
-		OutDate:      "outDate",
-		SortCode:     "sortCode",
-		ReturnFilter: "returnFilter",
-		Star:         "star",
-		Feature:      "feature",
-		MinPrice:     "minPrice",
-		MaxPrice:     "maxPrice",
-		Facility:     "facility",
-		HotelLabels:  "hotelLabels",
-	}
-	log.Println(api_services.ApiSearch(req))
+	//req := api_services.SearchRequestParams{
+	//	KeyWord:      "",
+	//	Page:         "",
+	//	CityName:     "长沙",
+	//	IDate:        "",
+	//	OutDate:      "",
+	//	SortCode:     "",
+	//	ReturnFilter: "",
+	//	Star:         "",
+	//	Feature:      "
+	//	MinPrice:     "",
+	//	MaxPrice:     "",
+	//	Facility:     "",
+	//	HotelLabels:  "",
+	//}
+	//log.Println(req)
+	//req2 := api_services.RoomPriceReqParams{
+	//	HotelId: "540562",
+	//}
 
+	//log.Println(api_services.ApiSearch(req))
+	//log.Println(api_services.ApiRoomPrice(req2))
+
+	log.Println(api_services.ApiCity())
 }
