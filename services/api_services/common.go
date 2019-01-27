@@ -5,6 +5,11 @@
 */
 package api_services
 
+const (
+	appId     = 58443
+	appSecret = "3bd66623713248bab7c97eabe481bbcd"
+)
+
 type CommonRequestParams struct {
 	ShowapiAppid     string `json:"showapi_appid"`     //100
 	ShowapiSign      string `json:"showapi_sign"`      //698d51a19d8a121ce581499d7b701668

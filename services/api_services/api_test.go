@@ -1,18 +1,17 @@
 /**
 *@Author: haoxiongxiao
 *@Date: 2019/1/26
-*@Description: CREATE GO FILE bysj
+*@Description: CREATE GO FILE api_services
 */
-package main
+package api_services
 
 import (
-	"bysj/services/api_services"
+	"testing"
 	"log"
 )
 
-func main() {
-
-	req := api_services.SearchRequestParams{
+func TestNewSearchApiServices(t *testing.T) {
+	req := SearchRequestParams{
 		KeyWord:      "keyWord",
 		Page:         "page",
 		CityName:     "cityName",
@@ -27,6 +26,6 @@ func main() {
 		Facility:     "facility",
 		HotelLabels:  "hotelLabels",
 	}
-	log.Println(api_services.ApiSearch(req))
+	log.Println(ApiSearch(req))
 
 }

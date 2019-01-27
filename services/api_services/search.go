@@ -5,13 +5,27 @@
 */
 package api_services
 
+import (
+	"showSdk/normalRequest"
+	"log"
+	"reflect"
+	"fmt"
+	"github.com/spf13/cast"
+	"encoding/json"
+	"errors"
+)
+
+type SearchApiServices struct {
+	ReqParams SearchRequestParams
+	Res       SearchRes
+}
+
 type SearchRequestParams struct {
-	CommonRequestParams
 	KeyWord      string `json:"keyWord"`      //查询关键字，酒店名称、位置、品牌等
 	Page         string `json:"page"`         //页码
 	CityName     string `json:"cityName"`     //城市
-	IData        string `json:"iData"`        //入住时间，格式为：YYYY-MM-DD（默认2天后）
-	OutData      string `json:"outData"`      //离开时间，格式为：YYYY-MM-DD（默认3天后）
+	IDate        string `json:"iDate"`        //入住时间，格式为：YYYY-MM-DD（默认2天后）
+	OutDate      string `json:"outDate"`      //离开时间，格式为：YYYY-MM-DD（默认3天后）
 	SortCode     string `json:"sortCode"`     //排序规则(默认1.推荐值排序) 1、推荐值降序 2、起价升序 3、起价降序 6、装修时间排序
 	ReturnFilter string `json:"returnFilter"` //是否返回聚合筛选条件,0:否,1:是。注意：returnFilter=1时搜索性能较差，尽量设置returnFilter=0
 	Star         string `json:"star"`         //星级 TWO:二星级, THREE:三星级, FOUR:四星级, FIVE:五星级, BUDGET:经济型, CONFORT:舒适型, HIGHEND:高档型, LUXURY:豪华型【多个以逗号:‘,’分隔】
@@ -22,32 +36,88 @@ type SearchRequestParams struct {
 	HotelLabels  string `json:"hotellablels"` //特色 1、温泉 3、休闲度假 4、购物便捷 5、客栈民宿 6、青年旅舍 7、精品酒店 8、亲子时刻
 }
 
-type SearchResponseParams struct {
-	RetCode        string `json:"retCode"`
-	Remark         string `json:"remark"`
-	FilterInfo     string `json:"filterInfo"`
-	Data           string `json:"data"`
-	CityName       string `json:"cityName"`
-	FilterName     string `json:"filterName"`
-	FilterId       string `json:"filterId"`
-	FilterProsList string `json:"filterProsList"`
-	SubName        string `json:"subName"`
-	SubId          string `json:"subId"`
-	SubProsList    string `json:"subProsList"`
-	Lat            string `json:"lat"`
-	Lng            string `json:"lng"`
-	Id             string `json:"id"`
-	Name           string `json:"name"`
-	HotelList      string `json:"hotelList"`
-	Count          string `json:"count"`
-	CityCode       string `json:"cityCode"`
-	HotelId        string `json:"hotelId"`
-	StarName       string `json:"starName"`
-	Address        string `json:"address"`
-	Location       string `json:"location"`
-	Facilities     string `json:"facilities"`
-	StartPrice     string `json:"startPrice"`
-	Pictures       string `json:"pictures"`
+type SearchRes struct {
+	ShowapiResError string `json:"showapi_res_error"`
+	ShowapiResID    string `json:"showapi_res_id"`
+	ShowapiResCode  int    `json:"showapi_res_code"`
+	ShowapiResBody struct {
+		CityName string `json:"cityName"`
+		Remark   string `json:"remark"`
+		Data struct {
+			HotelList []struct {
+				EnglishName string        `json:"englishName"`
+				HotelID     int           `json:"hotelId"`
+				Longitude   float64       `json:"longitude"`
+				Facilities  []interface{} `json:"facilities"`
+				Address     string        `json:"address"`
+				Latitude    float64       `json:"latitude"`
+				Price       int           `json:"price"`
+				ChineseName string        `json:"chineseName"`
+				Star        int           `json:"star"`
+				Picture     string        `json:"picture"`
+				StarName    string        `json:"starName"`
+			} `json:"hotelList"`
+			Count int `json:"count"`
+			Filter []struct {
+				FilterName string `json:"filterName"`
+				FilterID   string `json:"filterId"`
+				Pros []struct {
+					PoiName string `json:"poiName"`
+					PoiKey  string `json:"poiKey"`
+					Filter []struct {
+						Longitude  float64 `json:"longitude"`
+						Code       int     `json:"code"`
+						HotelCount int     `json:"hotelCount"`
+						Name       string  `json:"name"`
+						Heat       int     `json:"heat"`
+						Latitude   float64 `json:"latitude"`
+					} `json:"filter"`
+				} `json:"pros"`
+			} `json:"filter"`
+		} `json:"data"`
+		RetCode int `json:"ret_code"`
+	} `json:"showapi_res_body"`
 }
 
+func (this *SearchApiServices) GetSearchDataServices() (res SearchRes, err error) {
+	req := normalRequest.ShowapiRequest("http://route.showapi.com/1653-1", appId, appSecret)
+	log.Println(req)
+	t := reflect.TypeOf(this.ReqParams)
+	v := reflect.ValueOf(this.ReqParams)
 
+	for i := 0; i < v.NumField(); i++ {
+		if v.Field(i).CanInterface() {
+			if v.Field(i).CanInterface() {
+				req.AddTextPara(cast.ToString(t.Field(i).Tag), cast.ToString(v.Field(i).Interface()))
+				fmt.Printf("名字:%s    类型:%s  值:%v -标签:%s \n",
+					t.Field(i).Name,
+					t.Field(i).Type,
+					v.Field(i).Interface(),
+					t.Field(i).Tag)
+			}
+		}
+	}
+
+	s, err := req.Post()
+	if err != nil {
+		panic(err)
+	}
+
+	if err := json.Unmarshal([]byte(s), &this.Res); err != nil {
+		panic(err)
+	}
+
+	if this.Res.ShowapiResCode == 0 {
+		return this.Res, nil
+	} else {
+		return this.Res, errors.New(this.Res.ShowapiResError)
+	}
+
+}
+
+func ApiSearch(req SearchRequestParams) (res SearchRes, err error) {
+	apiService := SearchApiServices{req, res}
+
+	return apiService.GetSearchDataServices()
+
+}
