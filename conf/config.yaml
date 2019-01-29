@@ -1,0 +1,20 @@
+mysql:
+  username: "root"
+  password: "8080"
+  addr: "127.0.0.1:3306"
+  name: "bysj"
+gormlog: true
+redis:
+  password: ""
+  redis_url: "127.0.0.1:6379"
+  redis_idle_timeout_sec: 240
+  redis_max_idle: 10
+log:
+  writers: file,stdout
+  logger_level: DEBUG
+  logger_file: log/bysj.log
+  log_format_text: false
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 1
+  log_backup_count: 7

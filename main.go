@@ -6,34 +6,31 @@
 package main
 
 import (
-	"bysj/services/api_services"
+	"github.com/spf13/pflag"
+	"bysj/config"
 	"log"
+	"github.com/spf13/viper"
+	"github.com/kataras/iris"
+	"bysj/models"
 )
 
+var (
+	cfg = pflag.StringP("config", "c", "", "./config.yaml")
+)
+
+func init() {
+
+}
+
 func main() {
+	pflag.Parse()
 
-	//req := api_services.SearchRequestParams{
-	//	KeyWord:      "",
-	//	Page:         "",
-	//	CityName:     "长沙",
-	//	IDate:        "",
-	//	OutDate:      "",
-	//	SortCode:     "",
-	//	ReturnFilter: "",
-	//	Star:         "",
-	//	Feature:      "
-	//	MinPrice:     "",
-	//	MaxPrice:     "",
-	//	Facility:     "",
-	//	HotelLabels:  "",
-	//}
-	//log.Println(req)
-	//req2 := api_services.RoomPriceReqParams{
-	//	HotelId: "540562",
-	//}
+	if err := config.Init(*cfg); err != nil {
+		panic(err)
+	}
+	log.Println(viper.GetString("username"))
+	models.DB.Init()
+	app := iris.New()
+	app.Run(iris.Addr(":8080"))
 
-	//log.Println(api_services.ApiSearch(req))
-	//log.Println(api_services.ApiRoomPrice(req2))
-
-	log.Println(api_services.ApiCity())
 }
