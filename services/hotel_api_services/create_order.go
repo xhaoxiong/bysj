@@ -2,8 +2,8 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/27
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 type CreateOrderApiService struct{}
 
@@ -17,5 +17,3 @@ type CreateOrderReqParams struct {
 	InDate         string `json:"inDate"`
 	OutDate        string `json:"outDate"`
 }
-
-

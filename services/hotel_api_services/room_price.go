@@ -2,16 +2,17 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/27
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 import (
-	"reflect"
-	"github.com/spf13/cast"
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
-	"fmt"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"reflect"
+
+	"github.com/spf13/cast"
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type roomPriceApiService struct {
@@ -29,8 +30,8 @@ type RoomPriceResParams struct {
 	ShowapiResError string `json:"showapi_res_error"`
 	ShowapiResID    string `json:"showapi_res_id"`
 	ShowapiResCode  int    `json:"showapi_res_code"`
-	ShowapiResBody struct {
-		Remark string `json:"remark"`
+	ShowapiResBody  struct {
+		Remark   string `json:"remark"`
 		RoomInfo []struct {
 			RatePlanInfo []struct {
 				InvoiceType    int           `json:"invoiceType"`
@@ -45,7 +46,7 @@ type RoomPriceResParams struct {
 				GuestType      int           `json:"guestType"`
 				ID             string        `json:"id"`
 				PromotionRules []interface{} `json:"promotionRules"`
-				Cancel struct {
+				Cancel         struct {
 					Name string `json:"name"`
 					Desc string `json:"desc"`
 					Type string `json:"type"`
@@ -55,8 +56,8 @@ type RoomPriceResParams struct {
 				RatePrice      float64 `json:"ratePrice"`
 				BedInfo        string  `json:"bedInfo"`
 			} `json:"ratePlanInfo"`
-			RoomID int    `json:"roomId"`
-			Floor  string `json:"floor"`
+			RoomID     int    `json:"roomId"`
+			Floor      string `json:"floor"`
 			Facilities []struct {
 				TmpSubFacilities []struct {
 					SubName string `json:"subName"`
@@ -67,7 +68,7 @@ type RoomPriceResParams struct {
 			} `json:"facilities"`
 			BedDescription string `json:"bedDescription"`
 			Area           string `json:"area"`
-			Pictures []struct {
+			Pictures       []struct {
 				Path    string `json:"path"`
 				PicName string `json:"picName"`
 			} `json:"pictures"`

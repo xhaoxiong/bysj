@@ -11,6 +11,7 @@ import (
 
 	"github.com/kataras/iris"
 	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -26,5 +27,5 @@ func main() {
 	models.DB.Init()
 
 	app := iris.New()
-	app.Run(iris.Addr(":8080"))
+	app.Run(iris.Addr(viper.GetString("addr")))
 }

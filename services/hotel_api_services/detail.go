@@ -2,13 +2,14 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/27
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 import (
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 	"encoding/json"
 	"errors"
+
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type DetailApiService struct {
@@ -24,13 +25,13 @@ type DetailResParams struct {
 	ShowapiResError string `json:"showapi_res_error"`
 	ShowapiResID    string `json:"showapi_res_id"`
 	ShowapiResCode  int    `json:"showapi_res_code"`
-	ShowapiResBody struct {
+	ShowapiResBody  struct {
 		Data struct {
 			EnglishName string  `json:"englishName"`
 			Longitude   float64 `json:"longitude"`
 			RoomCount   int     `json:"roomCount"`
 			Address     string  `json:"address"`
-			Pictures []struct {
+			Pictures    []struct {
 				Path string `json:"path"`
 				Name string `json:"name"`
 			} `json:"pictures"`
@@ -45,7 +46,7 @@ type DetailResParams struct {
 			Latitude    float64 `json:"latitude"`
 			ChineseName string  `json:"chineseName"`
 			DebutYear   string  `json:"debutYear"`
-			Policy struct {
+			Policy      struct {
 				Children          string `json:"children"`
 				Pet               string `json:"pet"`
 				ArrivalDeparture  string `json:"arrivalDeparture"`
@@ -66,7 +67,7 @@ type DetailResParams struct {
 				Type int    `json:"type"`
 			} `json:"poiInfos"`
 			Instruction string `json:"instruction"`
-			Facilities []struct {
+			Facilities  []struct {
 				Code     string `json:"code"`
 				Name     string `json:"name"`
 				TypeName string `json:"typeName"`

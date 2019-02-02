@@ -2,16 +2,17 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/27
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 import (
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
-	"fmt"
-	"reflect"
-	"github.com/spf13/cast"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"reflect"
+
+	"github.com/spf13/cast"
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type RealTimeInquiryService struct {
@@ -31,9 +32,9 @@ type RealTimeInquiryResPrams struct {
 	ShowapiResError string `json:"showapi_res_error"`
 	ShowapiResID    string `json:"showapi_res_id"`
 	ShowapiResCode  int    `json:"showapi_res_code"`
-	ShowapiResBody struct {
+	ShowapiResBody  struct {
 		Remark string `json:"remark"`
-		Data struct {
+		Data   struct {
 			TotalPrice     int    `json:"totalPrice"`
 			InvoiceType    int    `json:"invoiceType"`
 			Wifi           string `json:"wifi"`
@@ -45,7 +46,7 @@ type RealTimeInquiryResPrams struct {
 			Name           string `json:"name"`
 			BedType        string `json:"bedType"`
 			MealInfo       string `json:"mealInfo"`
-			Cancel struct {
+			Cancel         struct {
 				Name string `json:"name"`
 				Desc string `json:"desc"`
 				Type string `json:"type"`

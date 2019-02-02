@@ -2,13 +2,14 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/27
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 import (
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 	"encoding/json"
 	"errors"
+
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type CityApiService struct {
@@ -19,7 +20,7 @@ type CityResParams struct {
 	ShowapiResError string `json:"showapi_res_error"`
 	ShowapiResID    string `json:"showapi_res_id"`
 	ShowapiResCode  int    `json:"showapi_res_code"`
-	ShowapiResBody struct {
+	ShowapiResBody  struct {
 		Remark       string   `json:"remark"`
 		RetCode      int      `json:"ret_code"`
 		CityNameList []string `json:"cityNameList"`

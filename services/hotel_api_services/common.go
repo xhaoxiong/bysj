@@ -2,8 +2,8 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/26
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 const (
 	appId     = 58443

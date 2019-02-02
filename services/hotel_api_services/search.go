@@ -2,15 +2,16 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/26
 *@Description: CREATE GO FILE api_services
-*/
-package api_services
+ */
+package hotel_api_services
 
 import (
-	"reflect"
-	"fmt"
-	"github.com/spf13/cast"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"reflect"
+
+	"github.com/spf13/cast"
 	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
@@ -39,10 +40,10 @@ type SearchRes struct {
 	ShowapiResError string `json:"showapi_res_error"`
 	ShowapiResID    string `json:"showapi_res_id"`
 	ShowapiResCode  int    `json:"showapi_res_code"`
-	ShowapiResBody struct {
+	ShowapiResBody  struct {
 		CityName string `json:"cityName"`
 		Remark   string `json:"remark"`
-		Data struct {
+		Data     struct {
 			HotelList []struct {
 				EnglishName string        `json:"englishName"`
 				HotelID     int           `json:"hotelId"`
@@ -56,14 +57,14 @@ type SearchRes struct {
 				Picture     string        `json:"picture"`
 				StarName    string        `json:"starName"`
 			} `json:"hotelList"`
-			Count int `json:"count"`
+			Count  int `json:"count"`
 			Filter []struct {
 				FilterName string `json:"filterName"`
 				FilterID   string `json:"filterId"`
-				Pros []struct {
+				Pros       []struct {
 					PoiName string `json:"poiName"`
 					PoiKey  string `json:"poiKey"`
-					Filter []struct {
+					Filter  []struct {
 						Longitude  float64 `json:"longitude"`
 						Code       int     `json:"code"`
 						HotelCount int     `json:"hotelCount"`
