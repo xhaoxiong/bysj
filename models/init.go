@@ -2,32 +2,37 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/28
 *@Description: CREATE GO FILE models
-*/
+ */
 package models
 
 import (
-	"github.com/jinzhu/gorm"
-	"github.com/garyburd/redigo/redis"
 	"fmt"
+	"time"
+
+	"github.com/garyburd/redigo/redis"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/lexkong/log"
 	"github.com/spf13/viper"
-	"time"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gopkg.in/mgo.v2"
 )
 
 type Database struct {
 	Mysql *gorm.DB
 	Redis *redis.Pool
+	Mgo   *mgo.Session
 }
 
 var DB *Database
+
 /*
 *
 * @msg mysql的初始化和连接
 * @author haoxiong
 * @date 2019/1/28 17:27
-*/
+ */
 func openMysqlDB(username, password, addr, name string) *gorm.DB {
+
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s",
 		username,
 		password,
@@ -45,6 +50,7 @@ func openMysqlDB(username, password, addr, name string) *gorm.DB {
 	// set for db connection
 	setupDB(db)
 	go keepAlive(db)
+	log.Info("---初始化mysql连接---")
 	return db
 
 }
@@ -61,6 +67,7 @@ func (db *Database) Init() {
 	DB = &Database{
 		Mysql: GetMysqlDB(),
 		Redis: GetRedis(),
+		Mgo:   GetMgoDB(),
 	}
 }
 
@@ -87,7 +94,7 @@ func keepAlive(dbc *gorm.DB) {
 * @msg redis 的初始化和连接
 * @author haoxiong
 * @date 2019/1/28 17:26
-*/
+ */
 func GetRedis() *redis.Pool {
 	return InitRedis()
 }
@@ -101,6 +108,7 @@ func InitRedis() *redis.Pool {
 
 func openRedisDB(redisURL string, redisMaxIdle int,
 	redisIdleTimeoutSec time.Duration, redisPassword string) *redis.Pool {
+	log.Info("---初始化redis连接---")
 	return &redis.Pool{
 		MaxIdle:     redisMaxIdle,
 		IdleTimeout: redisIdleTimeoutSec * time.Second,
@@ -123,4 +131,43 @@ func openRedisDB(redisURL string, redisMaxIdle int,
 			return nil
 		},
 	}
+}
+
+/*
+*
+* @msg mgo连接
+* @author haoxiong
+* @date 2019/1/29 15:31
+ */
+
+func GetMgoDB() *mgo.Session {
+	return InitMgo()
+}
+
+func InitMgo() *mgo.Session {
+	timeout, _ := time.ParseDuration(viper.GetString("timeout"))
+	authdb := viper.GetString("authdb")
+	authuser := viper.GetString("authuser")
+	authpass := viper.GetString("authpass")
+	poollimit := viper.GetInt("poollimit")
+	dialInfo := &mgo.DialInfo{
+		Addrs:     []string{""}, //数据库地址 dbhost: mongodb://user@123456:127.0.0.1:27017
+		Timeout:   timeout,      // 连接超时时间 timeout: 60 * time.Second
+		Source:    authdb,       // 设置权限的数据库 authdb: admin
+		Username:  authuser,     // 设置的用户名 authuser: user
+		Password:  authpass,     // 设置的密码 authpass: 123456
+		PoolLimit: poollimit,    // 连接池的数量 poollimit: 100
+	}
+	return openMgoDB(dialInfo)
+}
+
+func openMgoDB(dialInfo *mgo.DialInfo) *mgo.Session {
+	s, err := mgo.DialWithInfo(dialInfo)
+
+	if err != nil {
+		log.Errorf(err, "连接mongo 失败")
+		panic(err)
+	}
+	log.Info("---初始化mongodb连接---")
+	return s
 }

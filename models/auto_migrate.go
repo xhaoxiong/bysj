@@ -2,26 +2,26 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/28
 *@Description: CREATE GO FILE models
-*/
+ */
 package models
 
 import (
-	"github.com/lexkong/log"
-	"fmt"
-	"github.com/spf13/viper"
 	"database/sql"
+	"fmt"
+
 	"github.com/jinzhu/gorm"
+	"github.com/lexkong/log"
+	"github.com/spf13/viper"
 )
 
 func autoMigrate(db *gorm.DB) {
-	log.Infof("开始同步表")
+
 	if err := db.AutoMigrate(
 
-		&User{}).Error;
-		err != nil {
+		&User{}).Error; err != nil {
 		log.Error("自动建表失败", err)
 	}
-	log.Infof("同步表成功")
+	log.Infof("---同步表成功---")
 }
 
 func Syncdb() {
@@ -43,8 +43,8 @@ func CreateDB() {
 		addr,
 		name,
 		true,
-		//"Asia/Shanghai"),
-		"Local")
+		"Asia/Shanghai")
+	//"Local")
 	sqlstring := fmt.Sprintf("CREATE DATABASE  if not exists `%s` CHARSET utf8mb4 COLLATE utf8mb4_general_ci", name)
 	db, err := sql.Open("mysql", config)
 	if err != nil {

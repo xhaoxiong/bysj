@@ -4,11 +4,19 @@ mysql:
   addr: "127.0.0.1:3306"
   name: "bysj"
 gormlog: true
+
 redis:
   password: ""
   redis_url: "127.0.0.1:6379"
   redis_idle_timeout_sec: 240
   redis_max_idle: 10
+
+mongo:
+  addrs: "mongodb://user@123456:127.0.0.1:27017"
+  timeout: "60"
+  authuser: ""
+  authpass: ""
+  poollimit: 100
 log:
   writers: file,stdout
   logger_level: DEBUG
