@@ -8,6 +8,7 @@ package controllers
 import (
 	"bysj/services/wechat_api_services"
 	"github.com/kataras/iris"
+	"github.com/lexkong/log"
 )
 
 type AuthController struct {
@@ -22,11 +23,12 @@ func NewAuthController() *AuthController {
 
 func (this *AuthController) PostLogin() {
 	code := this.Ctx.FormValue("code")
+	log.Infof("获取前端的code:%s\n", code)
 	userinfo, err := this.WechatApiService.ExchangeUserInfo(code)
 	if err != nil {
-		this.ReturnJson("获取用户信息错误")
+		this.ReturnJson(10001, "获取用户信息错误")
 		return
 	}
-
-	this.ReturnSuccess("userinfo", userinfo)
+	log.Infof("获取用户信息:%v", userinfo)
+	this.ReturnSuccess("userinfo",userinfo)
 }

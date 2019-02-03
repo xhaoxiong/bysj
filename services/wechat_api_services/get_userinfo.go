@@ -9,13 +9,19 @@ import (
 	"net/http"
 	"github.com/spf13/viper"
 	"io/ioutil"
+	"encoding/json"
 )
 
 type WechatApiService struct{}
 
+type AuthInfo struct {
+	SessionKey string `json:"session_key"`
+	Openid     string `json:"openid"`
+}
+
 func (this *WechatApiService) ExchangeUserInfo(code string) (userinfo interface{}, err error) {
 	appId := viper.GetString("mini_program.app_id")
-	appSecret := viper.GetString("mini.program.app_secret")
+	appSecret := viper.GetString("mini_program.app_secret")
 
 	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?" +
 		"appid=" + appId + "&" +
@@ -28,6 +34,8 @@ func (this *WechatApiService) ExchangeUserInfo(code string) (userinfo interface{
 	}
 
 	bytes, e := ioutil.ReadAll(resp.Body)
+	info := &AuthInfo{}
 
-	return string(bytes), e
+	json.Unmarshal(bytes, info)
+	return info, e
 }

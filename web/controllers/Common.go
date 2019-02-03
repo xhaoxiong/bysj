@@ -5,16 +5,18 @@
 */
 package controllers
 
-import "github.com/kataras/iris"
+import (
+	"github.com/kataras/iris"
+)
 
 type Common struct {
 	Ctx iris.Context
 }
 
-func (this *Common) ReturnJson(message string, args ...interface{}) {
+func (this *Common) ReturnJson(status int, message string, args ...interface{}) {
 	result := make(map[string]interface{})
-	result["Status"] = false
-	result["Message"] = message
+	result["status"] = status
+	result["message"] = message
 
 	key := ""
 
@@ -22,6 +24,7 @@ func (this *Common) ReturnJson(message string, args ...interface{}) {
 		switch arg.(type) {
 		case string:
 			key = arg.(string)
+
 		default:
 			result[key] = arg
 		}
@@ -33,8 +36,8 @@ func (this *Common) ReturnJson(message string, args ...interface{}) {
 
 func (this *Common) ReturnSuccess(args ...interface{}) {
 	result := make(map[string]interface{})
-	result["Status"] = true
-	result["Message"] = "success"
+	result["status"] = 10000
+	result["message"] = "success"
 	key := ""
 	for _, arg := range args {
 		switch arg.(type) {
@@ -44,6 +47,7 @@ func (this *Common) ReturnSuccess(args ...interface{}) {
 			result[key] = arg
 		}
 	}
+
 	this.Ctx.JSON(result)
 	this.Ctx.StopExecution()
 	return
