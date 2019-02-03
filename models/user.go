@@ -13,9 +13,23 @@ type User struct {
 	Avatar   string
 	Mobile   string `gorm:"unique"`
 	Openid   string `gorm:"unique"`
-	Gender   string
+	Gender   int
 	Province string
 	City     string
 	Country  string
 	UnionId  string
+}
+
+type UserInfo struct {
+	Id int `json:"id"`
+	Userinfo struct {
+		AvatarUrl string `json:"avatarUrl"`
+		City      string `json:"city"`
+		Country   string `json:"country"`
+		Gender    int    `json:"gender"`
+		Language  string `json:"language"`
+		NickName  string `json:"nickName"`
+		Province  string `json:"province"`
+	} `json:"userinfo"`
+	Openid string `json:"openid"`
 }
