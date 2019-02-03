@@ -12,6 +12,8 @@ import (
 	"github.com/kataras/iris"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+
+	"bysj/route"
 )
 
 var (
@@ -26,6 +28,13 @@ func main() {
 	}
 	models.DB.Init()
 
-	app := iris.New()
+	app := newApp()
+	route.InitRouter(app)
 	app.Run(iris.Addr(viper.GetString("addr")))
+}
+
+func newApp() *iris.Application {
+	app := iris.New()
+	app.Configure(iris.WithOptimizations)
+	return app
 }
