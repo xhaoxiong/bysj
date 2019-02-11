@@ -7,10 +7,19 @@ package sms_api_services
 
 import (
 	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
-	"fmt"
+	"github.com/garyburd/redigo/redis"
+	"bysj/models"
+	"bysj/models/redi"
+	"github.com/spf13/viper"
 )
 
-type SmsApiService struct{}
+type SmsApiService struct {
+	redi *redis.Pool
+}
+
+func NewSmsApiService() *SmsApiService {
+	return &SmsApiService{redi: models.DB.Redis}
+}
 
 const (
 	appId     = 58443
@@ -23,7 +32,10 @@ func (this *SmsApiService) SendSms(code, mobile string) {
 	res.AddTextPara("content", "{\"name\":\""+mobile+"\",\"code\":\""+code+"\",\"minute\":\"3\",\"comName\":\"毕设酒店预订平台\"}")
 	res.AddTextPara("tNum", "T150606060601")
 	res.AddTextPara("big_msg", "")
-	s, e := res.Post()
+	_, err := res.Post()
 
-	fmt.Println(s, e)
+	if err == nil {
+		redi.Set(mobile, code)
+		redi.SetExpire(mobile, viper.GetString("sms_expire"))
+	}
 }

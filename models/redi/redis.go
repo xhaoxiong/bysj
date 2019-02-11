@@ -3,7 +3,7 @@
 *@Date: 2019/2/3
 *@Description: CREATE GO FILE redis
 */
-package redis
+package redi
 
 import (
 	"bysj/models"
@@ -17,6 +17,15 @@ func Set(k, v string) {
 	c := models.DB.Redis.Get()
 	defer c.Close()
 	_, err := c.Do("SET", k, v)
+	if err != nil {
+		log.Error("set error", err)
+	}
+}
+
+func SetExpire(k, exp string) {
+	c := models.DB.Redis.Get()
+	defer c.Close()
+	_, err := c.Do("expire", k, exp)
 	if err != nil {
 		log.Error("set error", err)
 	}

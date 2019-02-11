@@ -31,3 +31,4 @@ addr: ":9018"
 mini_program:
   app_id: "wx60d9d2df68b90f50"
   app_secret: "8d3e3fac008446e9df1c28317a9581a9"
+sms_expire: "180"

@@ -10,6 +10,7 @@ import (
 	"bysj/models"
 	"github.com/lexkong/log"
 	"github.com/kataras/iris/core/errors"
+	"bysj/models/redi"
 )
 
 type AuthRepositories struct {
@@ -37,8 +38,12 @@ func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
 	return nil
 }
 
-func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid string) error {
+func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, code string) error {
 	user := models.User{}
+
+	if value := redi.GetStringValue(mobile); code != value {
+		return errors.New("请输入正确的验证码")
+	}
 
 	if err := this.db.Where("mobile = ?", mobile).First(&user).Error; err == nil {
 		return errors.New("该手机号已经注册")
@@ -58,9 +63,6 @@ func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid s
 	}
 	return nil
 }
-
-
-
 
 func (this *AuthRepositories) Login() {
 

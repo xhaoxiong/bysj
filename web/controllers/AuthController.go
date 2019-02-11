@@ -18,12 +18,12 @@ type AuthController struct {
 	Ctx              iris.Context
 	WechatApiService wechat_api_services.WechatApiService
 	AuthServices     *services.AuthServices
-	SmsApiService    sms_api_services.SmsApiService
+	SmsApiService    *sms_api_services.SmsApiService
 	Common
 }
 
 func NewAuthController() *AuthController {
-	return &AuthController{AuthServices: services.NewAuthServices()}
+	return &AuthController{AuthServices: services.NewAuthServices(), SmsApiService: sms_api_services.NewSmsApiService()}
 }
 
 func (this *AuthController) GetOpenid() {
@@ -59,8 +59,8 @@ func (this *AuthController) PostRegister() {
 	cardNum := this.Ctx.FormValue("card_number")
 
 	openid := this.Ctx.FormValue("openid")
-
-	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid)
+	code:=this.Ctx.FormValue("code")
+	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid,code)
 
 	this.ReturnSuccess()
 }
@@ -71,5 +71,6 @@ func (this *AuthController) PostSendsms() {
 	code := this.Krand(6, 0)
 
 	this.SmsApiService.SendSms(code, mobile)
+
 	this.ReturnSuccess()
 }
