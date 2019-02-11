@@ -6,13 +6,15 @@
 package hotel_api_services
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
+	"bysj/services/sms_api_services"
 )
 
 func TestNewSearchApiServices(t *testing.T) {
+
+	a := &sms_api_services.SmsApiService{}
+	a.SendSms("123456", "18374878791")
 	/*
 		req := SearchRequestParams{
 			KeyWord:      "keyWord",
@@ -30,7 +32,7 @@ func TestNewSearchApiServices(t *testing.T) {
 			HotelLabels:  "hotelLabels",
 		}
 		log.Println(ApiSearch(req))
-	*/
+
 
 	/*
 		res := normalRequest.ShowapiRequest("http://route.showapi.com/1653-3", appId, appSecret)
@@ -76,7 +78,7 @@ func TestNewSearchApiServices(t *testing.T) {
 		//res.AddFilePara("img", "C:\\Users\\showa\\Desktop\\使用过的\\4.png")//文件上传时设置
 		fmt.Println(res.Post())
 	*/
-
+	/*
 	res := normalRequest.ShowapiRequest("http://route.showapi.com/1653-6", appId, appSecret)
 	res.AddTextPara("showapi_timestamp", "20190127230334")
 	res.AddTextPara("customerName", "xxx")
@@ -90,4 +92,5 @@ func TestNewSearchApiServices(t *testing.T) {
 	res.AddTextPara("outDate", "2019-01-29")
 	//res.AddFilePara("img", "C:\\Users\\showa\\Desktop\\使用过的\\4.png")//文件上传时设置
 	fmt.Println(res.Post())
+	*/
 }

@@ -18,7 +18,10 @@ func NewAuthServices() *AuthServices {
 	return &AuthServices{repo: repositories.NewAuthRepositories()}
 }
 
-
 func (this *AuthServices) CreateUser(info models.UserInfo) error {
 	return this.repo.CreateUser(info)
+}
+
+func (this *AuthServices) BindUser(mobile,username,cate,cardNum,openid string) error{
+	return this.repo.BindUser(mobile,username,cate,cardNum,openid)
 }

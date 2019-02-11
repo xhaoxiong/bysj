@@ -11,13 +11,17 @@ type User struct {
 	gorm.Model
 	NickName string
 	Avatar   string
-	Mobile   string `gorm:"unique"`
+	Mobile   string
 	Openid   string `gorm:"unique"`
 	Gender   int
 	Province string
 	City     string
 	Country  string
 	UnionId  string
+
+	Username   string
+	CardNumber string
+	Cate       int //1 2 3 4
 }
 
 type UserInfo struct {

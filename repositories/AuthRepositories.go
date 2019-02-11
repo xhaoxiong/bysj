@@ -9,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"bysj/models"
 	"github.com/lexkong/log"
+	"github.com/kataras/iris/core/errors"
 )
 
 type AuthRepositories struct {
@@ -35,6 +36,31 @@ func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
 	}
 	return nil
 }
+
+func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid string) error {
+	user := models.User{}
+
+	if err := this.db.Where("mobile = ?", mobile).First(&user).Error; err == nil {
+		return errors.New("该手机号已经注册")
+	}
+
+	if err := this.db.Where("openid = ?", openid).First(&user).Error; err != nil {
+		return errors.New("用户未授权")
+	}
+
+	if err := this.db.Model(&models.User{}).Where("id = ?", user.ID).Updates(map[string]interface{}{
+		"username":    username,
+		"cate":        cate,
+		"card_number": cardNum,
+		"mobile":      mobile,
+	}).Error; err != nil {
+		return errors.New("绑定失败")
+	}
+	return nil
+}
+
+
+
 
 func (this *AuthRepositories) Login() {
 

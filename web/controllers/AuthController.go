@@ -11,12 +11,14 @@ import (
 	"github.com/lexkong/log"
 	"bysj/services"
 	"bysj/models"
+	"bysj/services/sms_api_services"
 )
 
 type AuthController struct {
 	Ctx              iris.Context
 	WechatApiService wechat_api_services.WechatApiService
 	AuthServices     *services.AuthServices
+	SmsApiService    sms_api_services.SmsApiService
 	Common
 }
 
@@ -47,5 +49,27 @@ func (this *AuthController) PostUserinfo() {
 		return
 	}
 
+	this.ReturnSuccess()
+}
+
+func (this *AuthController) PostRegister() {
+	mobile := this.Ctx.FormValue("mobile")
+	username := this.Ctx.FormValue("username")
+	cate := this.Ctx.FormValue("cate")
+	cardNum := this.Ctx.FormValue("card_number")
+
+	openid := this.Ctx.FormValue("openid")
+
+	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid)
+
+	this.ReturnSuccess()
+}
+
+func (this *AuthController) PostSendsms() {
+	mobile := this.Ctx.FormValue("mobile")
+
+	code := this.Krand(6, 0)
+
+	this.SmsApiService.SendSms(code, mobile)
 	this.ReturnSuccess()
 }

@@ -8,7 +8,6 @@ package hotel_api_services
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/spf13/cast"
@@ -21,7 +20,7 @@ type SearchApiServices struct {
 }
 
 type SearchRequestParams struct {
-	KeyWord      string `json:"keyWord"`      //查询关键字，酒店名称、位置、品牌等
+	KeyWord      string `json:"keyWords"`      //查询关键字，酒店名称、位置、品牌等
 	Page         string `json:"page"`         //页码
 	CityName     string `json:"cityName"`     //城市
 	IDate        string `json:"iDate"`        //入住时间，格式为：YYYY-MM-DD（默认2天后）
@@ -91,11 +90,6 @@ func (this *SearchApiServices) GetSearchDataServices() (res SearchRes, err error
 				val := cast.ToString(v.Field(i).Interface())
 
 				req.AddTextPara(key, val)
-				fmt.Printf("名字:%s    类型:%s  值:%v -标签:%s \n",
-					t.Field(i).Name,
-					t.Field(i).Type,
-					v.Field(i).Interface(),
-					t.Field(i).Tag.Get("json"))
 			}
 		}
 	}
