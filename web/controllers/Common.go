@@ -9,6 +9,7 @@ import (
 	"github.com/kataras/iris"
 	"time"
 	"math/rand"
+	"fmt"
 )
 
 type Common struct {
@@ -49,7 +50,7 @@ func (this *Common) ReturnSuccess(args ...interface{}) {
 			result[key] = arg
 		}
 	}
-
+	fmt.Println(result)
 	this.Ctx.JSON(result)
 	this.Ctx.StopExecution()
 	return
@@ -60,7 +61,7 @@ KC_RAND_KIND_LOWER = 1	// 小写字母
 KC_RAND_KIND_UPPER = 2	// 大写字母
 KC_RAND_KIND_ALL   = 3 	// 数字、大小写字母
 */
-func (this *Common) Krand(size int, kind int) string{
+func (this *Common) Krand(size int, kind int) string {
 	ikind, kinds, result := kind, [][]int{[]int{10, 48}, []int{26, 97}, []int{26, 65}}, make([]byte, size)
 	is_all := kind > 2 || kind < 0
 	rand.Seed(time.Now().UnixNano())

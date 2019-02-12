@@ -12,6 +12,7 @@ import (
 	"bysj/services"
 	"bysj/models"
 	"bysj/services/sms_api_services"
+	"bysj/web/middleware"
 )
 
 type AuthController struct {
@@ -26,14 +27,19 @@ func NewAuthController() *AuthController {
 	return &AuthController{AuthServices: services.NewAuthServices(), SmsApiService: sms_api_services.NewSmsApiService()}
 }
 
-func (this *AuthController) GetOpenid() {
+func (this *AuthController) PostOpenid() {
 	code := this.Ctx.FormValue("code")
 	userinfo, err := this.WechatApiService.ExchangeUserInfo(code)
 	if err != nil {
 		this.ReturnJson(10001, "获取用户信息错误")
 		return
 	}
-	this.ReturnSuccess("userinfo", userinfo)
+	token := middleware.GenerateToken(userinfo.Openid, userinfo.SessionKey)
+	m := make(map[string]interface{})
+
+	m["openid"] = userinfo.Openid
+	m["token"] = token
+	this.ReturnSuccess("userinfo", m)
 }
 
 func (this *AuthController) PostUserinfo() {
@@ -59,8 +65,8 @@ func (this *AuthController) PostRegister() {
 	cardNum := this.Ctx.FormValue("card_number")
 
 	openid := this.Ctx.FormValue("openid")
-	code:=this.Ctx.FormValue("code")
-	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid,code)
+	code := this.Ctx.FormValue("code")
+	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code)
 
 	this.ReturnSuccess()
 }

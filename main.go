@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/viper"
 
 	"bysj/route"
+	"bysj/web/middleware"
 )
 
 var (
@@ -35,6 +36,7 @@ func main() {
 
 func newApp() *iris.Application {
 	app := iris.New()
+	app.Use(middleware.GetJWT().Serve)
 	app.Configure(iris.WithOptimizations)
 	return app
 }

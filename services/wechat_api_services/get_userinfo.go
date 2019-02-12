@@ -19,7 +19,7 @@ type AuthInfo struct {
 	Openid     string `json:"openid"`
 }
 
-func (this *WechatApiService) ExchangeUserInfo(code string) (userinfo interface{}, err error) {
+func (this *WechatApiService) ExchangeUserInfo(code string) (userinfo *AuthInfo, err error) {
 	appId := viper.GetString("mini_program.app_id")
 	appSecret := viper.GetString("mini_program.app_secret")
 

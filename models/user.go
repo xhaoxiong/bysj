@@ -35,5 +35,5 @@ type UserInfo struct {
 		NickName  string `json:"nickName"`
 		Province  string `json:"province"`
 	} `json:"userinfo"`
-	Openid string `json:"openid"`
+	Openid     string `json:"openid"`
 }
