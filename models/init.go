@@ -118,9 +118,9 @@ func openRedisDB(redisURL string, redisMaxIdle int,
 				return nil, fmt.Errorf("redis connection error: %s", err)
 			}
 			//验证redis密码
-			if _, authErr := c.Do("AUTH", redisPassword); authErr != nil {
-				return nil, fmt.Errorf("redis auth password error: %s", authErr)
-			}
+			//if _, authErr := c.Do("AUTH", redisPassword); authErr != nil {
+			//	return nil, fmt.Errorf("redis auth password error: %s", authErr)
+			//}
 			return c, err
 		},
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {

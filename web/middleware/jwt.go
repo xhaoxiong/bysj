@@ -51,7 +51,8 @@ func GetJWT() *jwtmiddleware.Middleware {
 		//验证未通过错误处理方式
 		//ErrorHandler: func(context.Context, string)
 		ErrorHandler: func(ctx iris.Context, s string) {
-			if strings.Contains(ctx.Request().RequestURI, "/auth/openid") {
+			if strings.Contains(ctx.Request().RequestURI, "/auth/openid") ||
+				strings.Contains(ctx.Request().RequestURI, "/auth/bind") {
 
 				ctx.Next()
 

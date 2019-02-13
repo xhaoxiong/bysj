@@ -13,6 +13,7 @@ import (
 	"bysj/models"
 	"bysj/services/sms_api_services"
 	"bysj/web/middleware"
+	"github.com/spf13/cast"
 )
 
 type AuthController struct {
@@ -58,7 +59,7 @@ func (this *AuthController) PostUserinfo() {
 	this.ReturnSuccess()
 }
 
-func (this *AuthController) PostRegister() {
+func (this *AuthController) PostBind() {
 	mobile := this.Ctx.FormValue("mobile")
 	username := this.Ctx.FormValue("username")
 	cate := this.Ctx.FormValue("cate")
@@ -66,12 +67,16 @@ func (this *AuthController) PostRegister() {
 
 	openid := this.Ctx.FormValue("openid")
 	code := this.Ctx.FormValue("code")
-	this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code)
+
+	if err := this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code); err != nil {
+		this.ReturnJson(10001, cast.ToString(err))
+		return
+	}
 
 	this.ReturnSuccess()
 }
 
-func (this *AuthController) PostSendsms() {
+func (this *AuthController) PostSendSms() {
 	mobile := this.Ctx.FormValue("mobile")
 
 	code := this.Krand(6, 0)
