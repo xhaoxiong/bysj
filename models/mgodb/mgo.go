@@ -9,6 +9,7 @@ import (
 	"bysj/models"
 
 	"gopkg.in/mgo.v2"
+	"log"
 )
 
 func connect() *mgo.Session {
@@ -48,4 +49,43 @@ func Upsert(db, collection string, selector, update interface{}) error {
 
 	_, err := ms.DB(db).C(collection).Upsert(selector, update)
 	return err
+}
+
+func Remove(db, collection string, selector interface{}) error {
+	ms := connect()
+	defer ms.Close()
+
+	return ms.DB(db).C(collection).Remove(selector)
+}
+
+func RemoveAll(db, collection string, selector interface{}) error {
+	ms := connect()
+	defer ms.Close()
+
+	return ms.DB(db).C(collection).Remove(selector)
+}
+
+func FindPage(db, collection string, page, limit int, query, selector, result interface{}) error {
+	ms := connect()
+	defer ms.Close()
+
+	return ms.DB(db).C(collection).Find(query).Select(selector).Skip(page * limit).Limit(limit).All(result)
+}
+
+func Count(db, collection string, query interface{}) (int, error) {
+	ms := connect()
+	defer ms.Close()
+
+	return ms.DB(db).C(collection).Find(query).Count()
+}
+
+func IsEmpty(db, collection string) bool  {
+	ms := connect()
+	defer ms.Close()
+	count, err := ms.DB(db).C(collection).Count()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return count == 0
+
 }

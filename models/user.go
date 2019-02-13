@@ -22,6 +22,8 @@ type User struct {
 	Username   string
 	CardNumber string
 	Cate       int //1 2 3 4
+
+	IsBind int `gorm:"default:2"` //1绑定 2未绑定
 }
 
 type UserInfo struct {
@@ -35,5 +37,5 @@ type UserInfo struct {
 		NickName  string `json:"nickName"`
 		Province  string `json:"province"`
 	} `json:"userinfo"`
-	Openid     string `json:"openid"`
+	Openid string `json:"openid"`
 }

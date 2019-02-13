@@ -11,6 +11,7 @@ import (
 	"bysj/models"
 	"bysj/models/redi"
 	"github.com/spf13/viper"
+	"github.com/lexkong/log"
 )
 
 type SmsApiService struct {
@@ -37,5 +38,7 @@ func (this *SmsApiService) SendSms(code, mobile string) {
 	if err == nil {
 		redi.Set(mobile, code)
 		redi.SetExpire(mobile, viper.GetString("sms_expire"))
+	} else {
+		log.Errorf(err, "发送失败\n")
 	}
 }

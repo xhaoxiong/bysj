@@ -31,18 +31,49 @@ func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
 	user.City = info.Userinfo.City
 	user.Country = info.Userinfo.Country
 
-	if err := this.db.Create(&user).Error; err != nil {
-		log.Error("添加用户失败", err)
-		return err
+	if this.db.Where("openid = ?", user.Openid).
+		First(&models.User{}).RecordNotFound() {
+		if err := this.db.Create(&user).Error; err != nil {
+			log.Error("添加用户失败", err)
+			return err
+		}
+		return nil
+	} else {
+
+		tx := this.db.Begin()
+		u := models.User{}
+		this.db.Where("openid = ?", user.Openid).First(&u)
+
+		if err := tx.Where("openid = ?", user.Openid).Unscoped().Delete(&models.User{}).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		if u.IsBind == 1 {
+			user.Mobile = u.Mobile
+			user.CardNumber = u.CardNumber
+			user.Username = u.Username
+			user.Cate = u.Cate
+			user.IsBind = 1
+		}
+
+		if err := tx.Create(&user).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		if err := tx.Commit().Error; err != nil {
+			return err
+		}
+
+		return nil
 	}
-	return nil
 }
 
 func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, code string) error {
 	user := models.User{}
 
 	if value := redi.GetStringValue(mobile); code != value {
-		return errors.New("请输入正确的验证码")
+		return errors.New("请输入正确的短信验证码")
 	}
 
 	if err := this.db.Where("mobile = ?", mobile).First(&user).Error; err == nil {
@@ -58,10 +89,41 @@ func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, 
 		"cate":        cate,
 		"card_number": cardNum,
 		"mobile":      mobile,
+		"is_bind":     1,
 	}).Error; err != nil {
 		return errors.New("绑定失败")
 	}
 	return nil
+}
+
+func (this *AuthRepositories) BindUserCheck(openid string) bool {
+	var user models.User
+	if err := this.db.Where("openid = ?", openid).First(&user).Error; err != nil {
+		return false
+	}
+	if user.IsBind == 1 {
+		return true
+	} else {
+		return false
+	}
+
+}
+
+func (this *AuthRepositories) BindCancel(openid string) bool {
+	var user models.User
+	if err := this.db.Where("openid = ?", openid).First(&user).Error; err != nil {
+		return false
+	}
+
+	if err := this.db.Model(&models.User{}).Where("openid = ?", openid).Updates(map[string]interface{}{
+		"is_bind": 0,
+		"mobile":  "",
+	}).Error; err != nil {
+		return false
+	}
+
+	return true
+
 }
 
 func (this *AuthRepositories) Login() {

@@ -25,3 +25,11 @@ func (this *AuthServices) CreateUser(info models.UserInfo) error {
 func (this *AuthServices) BindUser(mobile, username, cate, cardNum, openid, code string) error {
 	return this.repo.BindUser(mobile, username, cate, cardNum, openid, code)
 }
+
+func (this *AuthServices) BindUserCheck(openid string) bool  {
+	return this.repo.BindUserCheck(openid)
+}
+
+func (this *AuthServices) BindCancel(openid string) bool {
+	return this.repo.BindCancel(openid)
+}

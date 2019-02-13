@@ -52,14 +52,16 @@ func GetJWT() *jwtmiddleware.Middleware {
 		//ErrorHandler: func(context.Context, string)
 		ErrorHandler: func(ctx iris.Context, s string) {
 			if strings.Contains(ctx.Request().RequestURI, "/auth/openid") ||
-				strings.Contains(ctx.Request().RequestURI, "/auth/bind") {
-
+				strings.Contains(ctx.Request().RequestURI, "/auth/bind") ||
+				strings.Contains(ctx.Request().RequestURI, "/auth/send/sms") ||
+				strings.Contains(ctx.Request().RequestURI, "/auth/userinfo") ||
+				strings.Contains(ctx.Request().RequestURI, "/generate/token") {
 				ctx.Next()
 
 			} else {
 				result := make(map[string]interface{})
 				result["msg"] = "认证失败"
-				result["status"] = 10001
+				result["status"] = 10014
 				ctx.JSON(result)
 			}
 
@@ -71,12 +73,12 @@ func GetJWT() *jwtmiddleware.Middleware {
 //生成token
 func GenerateToken(openid, sessionKey string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"openid":     openid,                                                   //openid
-		"sessionKey": sessionKey,                                               //sessionKey
-		"iss":        "iris_bysj",                                              //签发者
-		"iat":        time.Now().Unix(),                                        //签发时间
-		"jti":        "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
-		"exp":        time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
+		"openid": openid, //openid
+		//"sessionKey": sessionKey,                                               //sessionKey
+		"iss": "iris_bysj",                                              //签发者
+		"iat": time.Now().Unix(),                                        //签发时间
+		"jti": "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
+		"exp": time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
 	})
 	tokenString, _ := token.SignedString([]byte(jwtKey))
 	fmt.Println("签发时间：", time.Now().Unix())

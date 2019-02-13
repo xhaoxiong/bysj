@@ -39,6 +39,7 @@ func (this *AuthController) PostOpenid() {
 	m := make(map[string]interface{})
 
 	m["openid"] = userinfo.Openid
+	m["sessionKey"] = userinfo.SessionKey
 	m["token"] = token
 	this.ReturnSuccess("userinfo", m)
 }
@@ -59,6 +60,7 @@ func (this *AuthController) PostUserinfo() {
 	this.ReturnSuccess()
 }
 
+//绑定手机号码
 func (this *AuthController) PostBind() {
 	mobile := this.Ctx.FormValue("mobile")
 	username := this.Ctx.FormValue("username")
@@ -67,13 +69,40 @@ func (this *AuthController) PostBind() {
 
 	openid := this.Ctx.FormValue("openid")
 	code := this.Ctx.FormValue("code")
-
+	sessionKey := this.Ctx.FormValue("sessionKey")
 	if err := this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
+	token := middleware.GenerateToken(openid, sessionKey)
+	result := make(map[string]interface{})
+	result["message"] = "success"
+	result["status"] = 10000
+	result["token"] = token
+	this.Ctx.JSON(result)
+	return
+}
 
-	this.ReturnSuccess()
+func (this *AuthController) PostBindCheck() {
+	openid := this.Ctx.FormValue("openid")
+	isBind := this.AuthServices.BindUserCheck(openid)
+	this.ReturnSuccess("isBind", isBind)
+}
+
+func (this *AuthController) PostBindCancel() {
+	openid := this.Ctx.FormValue("openid")
+	isBind := this.AuthServices.BindCancel(openid)
+	this.ReturnSuccess("isBind", isBind)
+}
+
+func (this *AuthController) PostGenerateToken() {
+	openid := this.Ctx.FormValue("openid")
+	sessionKey := this.Ctx.FormValue("sessionKey")
+	token := middleware.GenerateToken(openid, sessionKey)
+	m := make(map[string]interface{})
+	m["token"] = token
+	this.Ctx.JSON(m)
+	return
 }
 
 func (this *AuthController) PostSendSms() {
