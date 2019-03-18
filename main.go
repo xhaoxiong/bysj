@@ -16,7 +16,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 
 	"bysj/route"
-	"bysj/web/middleware"
 )
 
 var (
@@ -48,7 +47,7 @@ func main() {
 
 func newApp() *iris.Application {
 	app := iris.New()
-	app.Use(middleware.GetJWT().Serve)
+	//app.Use(middleware.GetJWT().Serve)
 	app.Configure(iris.WithOptimizations)
 	return app
 }

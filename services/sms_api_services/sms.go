@@ -6,12 +6,12 @@
 package sms_api_services
 
 import (
-	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
-	"github.com/garyburd/redigo/redis"
 	"bysj/models"
 	"bysj/models/redi"
-	"github.com/spf13/viper"
+	"github.com/garyburd/redigo/redis"
 	"github.com/lexkong/log"
+	"github.com/spf13/viper"
+	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
 )
 
 type SmsApiService struct {
@@ -19,7 +19,7 @@ type SmsApiService struct {
 }
 
 func NewSmsApiService() *SmsApiService {
-	return &SmsApiService{redi: models.DB.Redis}
+	return &SmsApiService{redi: models.GetRedis()}
 }
 
 const (

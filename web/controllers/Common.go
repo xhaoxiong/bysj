@@ -6,7 +6,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/kataras/iris"
 	"math/rand"
 	"time"
@@ -18,7 +17,7 @@ type Common struct {
 
 func (this *Common) ReturnJson(status int, message string, args ...interface{}) {
 	result := make(map[string]interface{})
-	result["status"] = status
+	result["code"] = status
 	result["message"] = message
 
 	key := ""
@@ -50,7 +49,6 @@ func (this *Common) ReturnSuccess(args ...interface{}) {
 			result[key] = arg
 		}
 	}
-	fmt.Println(result)
 	this.Ctx.JSON(result)
 	this.Ctx.StopExecution()
 	return
