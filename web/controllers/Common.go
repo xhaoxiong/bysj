@@ -6,10 +6,10 @@
 package controllers
 
 import (
-	"github.com/kataras/iris"
-	"time"
-	"math/rand"
 	"fmt"
+	"github.com/kataras/iris"
+	"math/rand"
+	"time"
 )
 
 type Common struct {
@@ -39,7 +39,7 @@ func (this *Common) ReturnJson(status int, message string, args ...interface{}) 
 
 func (this *Common) ReturnSuccess(args ...interface{}) {
 	result := make(map[string]interface{})
-	result["status"] = 10000
+	result["code"] = 10000
 	result["message"] = "success"
 	key := ""
 	for _, arg := range args {
