@@ -8,10 +8,12 @@ package main
 import (
 	"bysj/config"
 	"bysj/models"
-
+	"bysj/models/mgodb"
+	"bysj/services/hotel_api_services"
 	"github.com/kataras/iris"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"gopkg.in/mgo.v2/bson"
 
 	"bysj/route"
 	"bysj/web/middleware"
@@ -28,7 +30,17 @@ func main() {
 		panic(err)
 	}
 	models.DB.Init()
+	//go services.SyncCity
+	if res, err := hotel_api_services.ApiCity(); err != nil {
 
+	} else {
+		m := make(map[string]interface{})
+		v := res.ShowapiResBody.CityNameList
+		m["_id"] = bson.NewObjectId().Hex()
+		m["list"] = v
+		mgodb.Insert("bysj", "hotel", m)
+
+	}
 	app := newApp()
 	route.InitRouter(app)
 	app.Run(iris.Addr(viper.GetString("addr")))

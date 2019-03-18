@@ -50,7 +50,6 @@ func openMysqlDB(username, password, addr, name string) *gorm.DB {
 	// set for db connection
 	setupDB(db)
 	go keepAlive(db)
-	log.Info("---初始化mysql连接---")
 	return db
 
 }
@@ -108,7 +107,6 @@ func InitRedis() *redis.Pool {
 
 func openRedisDB(redisURL string, redisMaxIdle int,
 	redisIdleTimeoutSec time.Duration, redisPassword string) *redis.Pool {
-	log.Info("---初始化redis连接---")
 	return &redis.Pool{
 		MaxIdle:     redisMaxIdle,
 		IdleTimeout: redisIdleTimeoutSec * time.Second,
@@ -168,6 +166,5 @@ func openMgoDB(dialInfo *mgo.DialInfo) *mgo.Session {
 		log.Errorf(err, "连接mongo 失败")
 		panic(err)
 	}
-	log.Info("---初始化mongodb连接---")
 	return s
 }

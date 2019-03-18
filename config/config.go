@@ -6,10 +6,10 @@
 package config
 
 import (
-	"github.com/spf13/viper"
-	"strings"
 	"github.com/fsnotify/fsnotify"
 	"github.com/lexkong/log"
+	"github.com/spf13/viper"
+	"strings"
 )
 
 type Config struct {

@@ -21,7 +21,6 @@ func autoMigrate(db *gorm.DB) {
 		&User{}).Error; err != nil {
 		log.Error("自动建表失败", err)
 	}
-	log.Infof("---同步表成功---")
 }
 
 func Syncdb() {
@@ -55,7 +54,7 @@ func CreateDB() {
 	if err != nil {
 		log.Errorf(err, "创建表%s失败", name)
 	} else {
-		log.Infof("Created Database %s  created", name)
+		fmt.Println("Created Database %s  created", name)
 	}
 	defer db.Close()
 }

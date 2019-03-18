@@ -86,7 +86,7 @@ type DetailResParams struct {
 
 func (this *DetailApiService) GetHotelDetail(hotelId string) (DetailResParams, error) {
 	res := normalRequest.ShowapiRequest("http://route.showapi.com/1653-3", appId, appSecret)
-	res.AddTextPara("hotelId", "474138")
+	res.AddTextPara("hotelId", hotelId)
 	//res.AddFilePara("img", "C:\\Users\\showa\\Desktop\\使用过的\\4.png")//文件上传时设置
 	s, err := res.Post()
 
