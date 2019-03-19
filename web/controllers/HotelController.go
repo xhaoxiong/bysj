@@ -50,10 +50,31 @@ func (this *HotelController) GetCity() {
 
 func (this *HotelController) PostDetail() {
 	var reqParam hotel_api_services.DetailRequestParams
+	if err := this.Ctx.ReadJSON(&reqParam); err != nil {
+		this.ReturnJson(10002, cast.ToString(err))
+		return
+	}
 	res, err := hotel_api_services.ApiDetail(reqParam)
 	if err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
 	this.ReturnSuccess("data", res.ShowapiResBody.Data)
+}
+
+func (this *HotelController) PostRoomPrice() {
+	var reqParam hotel_api_services.RoomPriceReqParams
+
+	if err := this.Ctx.ReadJSON(&reqParam); err != nil {
+		this.ReturnJson(10001, cast.ToString(err))
+		return
+	}
+
+	res, err := hotel_api_services.ApiRoomPrice(reqParam)
+	if err != nil {
+		this.ReturnJson(10002, cast.ToString(err))
+		return
+	}
+
+	this.ReturnSuccess("data", res.ShowapiResBody.RoomInfo)
 }
