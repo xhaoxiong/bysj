@@ -22,13 +22,15 @@ func NewHotelController() *HotelController {
 
 func (this *HotelController) PostSearch() {
 
-	reqParams := &hotel_api_services.SearchRequestParams{}
+	//reqParams := &hotel_api_services.SearchRequestParams{}
 
-	if err := this.Ctx.ReadJSON(reqParams); err != nil {
+	var reqParams hotel_api_services.SearchRequestParams
+
+	if err := this.Ctx.ReadJSON(&reqParams); err != nil {
 		this.ReturnJson(10003, cast.ToString(err))
 		return
 	}
-	res, err := hotel_api_services.ApiSearch(*reqParams)
+	res, err := hotel_api_services.ApiSearch(reqParams)
 	if err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
