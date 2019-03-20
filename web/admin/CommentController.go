@@ -18,6 +18,10 @@ type CommentController struct {
 	Common
 }
 
+func NewCommentController() *CommentController {
+	return &CommentController{Service: services.NewCommentService()}
+}
+
 func (this *CommentController) GetList() (result *models.PageCommentResult) {
 	if err := this.Ctx.ReadJSON(&result); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
