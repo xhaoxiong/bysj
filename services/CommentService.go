@@ -29,3 +29,7 @@ func (this *CommentService) Create(comment models.Comment) error {
 func (this *CommentService) Delete(ids []uint) error {
 	return this.repo.Delete(ids)
 }
+
+func (this *CommentService) Update(m map[string]interface{}) error {
+	return this.repo.Update(m)
+}

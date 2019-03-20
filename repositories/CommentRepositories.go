@@ -46,3 +46,7 @@ func (this *CommentRepositories) Delete(ids []uint) error {
 func (this *CommentRepositories) Create(comment models.Comment) error {
 	return this.db.Create(&comment).Error
 }
+
+func (this *CommentRepositories) Update(m map[string]interface{}) error {
+	return this.db.Model(&models.Comment{}).Updates(m).Error
+}

@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/spf13/cast"
 	"github.com/xhaoxiong/ShowApiSdk/normalRequest"
@@ -36,9 +37,9 @@ type RoomPriceResParams struct {
 			RatePlanInfo []struct {
 				InvoiceType    int           `json:"invoiceType"`
 				Wifi           string        `json:"wifi"`
-				AveragePrice   int           `json:"averagePrice"`
-				TaxAndFeePrice int           `json:"taxAndFeePrice"`
-				ResNum         int           `json:"resNum"`
+				AveragePrice   float64       `json:"averagePrice"`
+				TaxAndFeePrice float64       `json:"taxAndFeePrice"`
+				ResNum         float64       `json:"resNum"`
 				MealInfo       string        `json:"mealInfo"`
 				MaxOccupancy   int           `json:"maxOccupancy"`
 				Name           string        `json:"name"`
@@ -81,6 +82,8 @@ type RoomPriceResParams struct {
 
 func (this *roomPriceApiService) GetRoomPrice() (RoomPriceResParams, error) {
 	req := normalRequest.ShowapiRequest("http://route.showapi.com/1653-4", appId, appSecret)
+	req.SetConnectTimeOut(2 * time.Second)
+	req.SetReadTimeOut(1 * time.Second)
 	t := reflect.TypeOf(this.ReqParams)
 	v := reflect.ValueOf(this.ReqParams)
 
