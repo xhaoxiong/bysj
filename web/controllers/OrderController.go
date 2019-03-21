@@ -10,6 +10,7 @@ import (
 	"bysj/services"
 	"github.com/kataras/iris"
 	"github.com/spf13/cast"
+	"github.com/xhaoxiong/util"
 )
 
 type OrderController struct {
@@ -37,11 +38,12 @@ func (this *OrderController) PostCreate() {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
+	order.OrderNumber = string(util.Krand(8, 0))
 	if err := this.Service.Insert(order); err != nil {
 		this.ReturnJson(10002, cast.ToString(err))
 		return
 	}
-	this.ReturnSuccess()
+	this.ReturnSuccess("data", order)
 }
 
 func (this *OrderController) PostUpdate() {
@@ -56,5 +58,3 @@ func (this *OrderController) PostUpdate() {
 	}
 	this.ReturnSuccess()
 }
-
-

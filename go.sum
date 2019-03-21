@@ -133,6 +133,8 @@ github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljT
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=
 github.com/xhaoxiong/ShowApiSdk v0.0.0-20190127114330-b4cc382f772c h1:vUTGY8dBUxPsr7l+jFFvr1zKq1R3z4JvcT/4xdthiQE=
 github.com/xhaoxiong/ShowApiSdk v0.0.0-20190127114330-b4cc382f772c/go.mod h1:o0ynKuhTYYqBjG2AJcW4rAioatoJXZXzp0xQRcF76Bk=
+github.com/xhaoxiong/util v0.0.0-20190308101613-8a9690dde2e5 h1:5A9HSdxleTPdNaDdbQOzmrh5uVg3dx0TpQpMjO5Nfbs=
+github.com/xhaoxiong/util v0.0.0-20190308101613-8a9690dde2e5/go.mod h1:WcEbu4bEVuZ75UCJ/E4HiGtpvOEFZ/3mNKF6nn6y5BA=
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 golang.org/x/crypto v0.0.0-20181127143415-eb0de9b17e85/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9 h1:mKdxBk7AujPs8kU4m80U72y/zjbZ3UcXC7dClwKbUI0=

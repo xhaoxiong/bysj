@@ -40,7 +40,15 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 }
 
 func (this *OrderRepositories) Insert(order *models.Order) error {
-	return this.db.Create(&order).Error
+
+	if err := this.db.Create(&order).Error; err != nil {
+		return err
+	}
+	u := models.User{}
+
+	this.db.Where("id = ?", order.UserId).First(&u)
+	order.User = &u
+	return nil
 }
 
 func (this *OrderRepositories) Update(m map[string]interface{}) error {

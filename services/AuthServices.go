@@ -33,3 +33,7 @@ func (this *AuthServices) BindUserCheck(openid string) bool  {
 func (this *AuthServices) BindCancel(openid string) bool {
 	return this.repo.BindCancel(openid)
 }
+
+func (this *AuthServices) AdminLogin(m map[string]interface{}) error  {
+	return this.repo.AdminLogin(m)
+}

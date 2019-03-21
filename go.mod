@@ -44,5 +44,6 @@ require (
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.1
 	github.com/xhaoxiong/ShowApiSdk v0.0.0-20190127114330-b4cc382f772c
+	github.com/xhaoxiong/util v0.0.0-20190308101613-8a9690dde2e5
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce
 )

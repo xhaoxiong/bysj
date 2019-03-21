@@ -27,7 +27,7 @@ type User struct {
 }
 
 type UserInfo struct {
-	Id int `json:"id"`
+	Id       int `json:"id"`
 	Userinfo struct {
 		AvatarUrl string `json:"avatarUrl"`
 		City      string `json:"city"`
@@ -38,4 +38,10 @@ type UserInfo struct {
 		Province  string `json:"province"`
 	} `json:"userinfo"`
 	Openid string `json:"openid"`
+}
+
+type AdminUser struct {
+	gorm.Model
+	Username string
+	Password string
 }

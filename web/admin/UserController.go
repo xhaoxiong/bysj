@@ -18,7 +18,7 @@ type UserController struct {
 }
 
 func NewUserController() *UserController {
-	return &UserController{}
+	return &UserController{Service: services.NewUserService()}
 }
 
 func (this *UserController) GetList() {

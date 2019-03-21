@@ -17,7 +17,8 @@ func InitRouter(app *iris.Application) {
 	mvc.New(app.Party("/hotel")).Handle(controllers.NewHotelController())
 	mvc.New(app.Party("/order")).Handle(controllers.NewOrderController())
 	mvc.New(app.Party("/comment")).Handle(controllers.NewCommentController())
-	mvc.New(app.Party("/admin/user")).Handle(admin.NewUserController())
-	mvc.New(app.Party("/admin/order")).Handle(admin.NewOrderController())
-	mvc.New(app.Party("/admin/comment")).Handle(admin.NewCommentController())
+	mvc.New(app.Party("/api/admin/user")).Handle(admin.NewUserController())
+	mvc.New(app.Party("/api/admin/order")).Handle(admin.NewOrderController())
+	mvc.New(app.Party("/api/admin/comment")).Handle(admin.NewCommentController())
+	mvc.New(app.Party("/api/admin/auth")).Handle(admin.NewAuthController())
 }

@@ -17,8 +17,11 @@ import (
 func autoMigrate(db *gorm.DB) {
 
 	if err := db.AutoMigrate(
-
-		&User{}).Error; err != nil {
+		&AdminUser{},
+		&User{},
+		&Order{},
+		&PayRecord{},
+	).Error; err != nil {
 		log.Error("自动建表失败", err)
 	}
 }

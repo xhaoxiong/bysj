@@ -6,11 +6,11 @@
 package repositories
 
 import (
-	"github.com/jinzhu/gorm"
 	"bysj/models"
-	"github.com/lexkong/log"
-	"github.com/kataras/iris/core/errors"
 	"bysj/models/redi"
+	"github.com/jinzhu/gorm"
+	"github.com/kataras/iris/core/errors"
+	"github.com/lexkong/log"
 )
 
 type AuthRepositories struct {
@@ -132,4 +132,15 @@ func (this *AuthRepositories) Login() {
 
 func (this *AuthRepositories) Logout() {
 
+}
+
+func (this *AuthRepositories) AdminLogin(m map[string]interface{}) error {
+	var adminUser models.AdminUser
+
+	if err := this.db.Where("username = ? and password =?",
+		m["username"], m["password"]).First(&adminUser).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
