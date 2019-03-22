@@ -33,7 +33,7 @@ func (this *UserController) GetList() {
 
 func (this *UserController) PostUpdate() {
 	m := make(map[string]interface{})
-	if err := this.Ctx.ReadJSON(m); err != nil {
+	if err := this.Ctx.ReadJSON(&m); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}

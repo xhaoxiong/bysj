@@ -12,6 +12,7 @@ type Order struct {
 
 	OrderNumber string
 	RealId      string //实际居住的某一间id
+	RealInfo    string //实际的房间的具体信息
 	HotelId     string //酒店id
 	HotelItem   string
 	RoomId      string //房间id

@@ -6,8 +6,8 @@
 package services
 
 import (
-	"bysj/repositories"
 	"bysj/models"
+	"bysj/repositories"
 )
 
 type AuthServices struct {
@@ -26,7 +26,7 @@ func (this *AuthServices) BindUser(mobile, username, cate, cardNum, openid, code
 	return this.repo.BindUser(mobile, username, cate, cardNum, openid, code)
 }
 
-func (this *AuthServices) BindUserCheck(openid string) bool  {
+func (this *AuthServices) BindUserCheck(openid string) bool {
 	return this.repo.BindUserCheck(openid)
 }
 
@@ -34,6 +34,6 @@ func (this *AuthServices) BindCancel(openid string) bool {
 	return this.repo.BindCancel(openid)
 }
 
-func (this *AuthServices) AdminLogin(m map[string]interface{}) error  {
+func (this *AuthServices) AdminLogin(m map[string]interface{}) (user models.AdminUser, err error) {
 	return this.repo.AdminLogin(m)
 }

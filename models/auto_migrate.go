@@ -21,7 +21,9 @@ func autoMigrate(db *gorm.DB) {
 		&User{},
 		&Order{},
 		&PayRecord{},
-	).Error; err != nil {
+		&Comment{},
+	).Error;
+		err != nil {
 		log.Error("自动建表失败", err)
 	}
 }

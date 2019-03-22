@@ -134,13 +134,13 @@ func (this *AuthRepositories) Logout() {
 
 }
 
-func (this *AuthRepositories) AdminLogin(m map[string]interface{}) error {
+func (this *AuthRepositories) AdminLogin(m map[string]interface{}) (user models.AdminUser, err error) {
 	var adminUser models.AdminUser
 
 	if err := this.db.Where("username = ? and password =?",
 		m["username"], m["password"]).First(&adminUser).Error; err != nil {
-		return err
+		return adminUser, err
 	}
 
-	return nil
+	return adminUser, nil
 }

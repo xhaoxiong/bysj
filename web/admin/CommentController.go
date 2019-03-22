@@ -22,9 +22,10 @@ func NewCommentController() *CommentController {
 	return &CommentController{Service: services.NewCommentService()}
 }
 
-func (this *CommentController) GetList() (result *models.PageCommentResult) {
+func (this *CommentController) PostList() (result *models.PageCommentResult) {
 	if err := this.Ctx.ReadJSON(&result); err != nil {
-		this.ReturnJson(10001, cast.ToString(err))
+		result.Code = 10001
+		result.Message = cast.ToString(err)
 		return
 	}
 	this.Service.List(result)
@@ -33,7 +34,7 @@ func (this *CommentController) GetList() (result *models.PageCommentResult) {
 
 func (this *CommentController) PostUpdate() {
 	m := make(map[string]interface{})
-	if err := this.Ctx.ReadJSON(m); err != nil {
+	if err := this.Ctx.ReadJSON(&m); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}

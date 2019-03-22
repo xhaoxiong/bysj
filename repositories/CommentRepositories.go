@@ -15,7 +15,7 @@ type CommentRepositories struct {
 }
 
 func NewCommentRepositories() *CommentRepositories {
-	return &CommentRepositories{db: models.GetMysqlDB()}
+	return &CommentRepositories{db: models.DB.Mysql}
 }
 
 func (this *CommentRepositories) List(result *models.PageCommentResult) {
@@ -23,20 +23,27 @@ func (this *CommentRepositories) List(result *models.PageCommentResult) {
 	result.Message = "success"
 
 	var comments []models.Comment
-	total := 0
-	this.db.Model(&models.Comment{}).Count(&total)
+
 	qs := this.db
+	qc := this.db.Model(&models.Comment{})
+
+	if result.Search != "" {
+		qs = qs.Where("hotel_name like ?", "%"+result.Search+"%")
+		qc = qc.Where("hotel_name like ?", "%"+result.Search+"%")
+	}
 
 	if result.Status != 0 {
 		qs = qs.Where("status = ?", result.Status)
+		qc = qc.Where("status = ?", result.Status)
 	}
 
-	if result.HotleId != "" {
-		qs = qs.Where("hotel_id = ?", result.HotleId)
+	if result.HotelId != "" {
+		qs = qs.Where("hotel_id = ?", result.HotelId)
+		qc = qc.Where("hotel_id = ?", result.HotelId)
 	}
-
-	qs.Limit(result.Count).Offset((result.Page - 1) * result.Count).Find(&comments)
-
+	qc.Count(&result.Total)
+	qs.Limit(result.Per).Preload("User").Preload("Order").Offset((result.Page - 1) * result.Per).Find(&comments)
+	result.Data = comments
 	return
 }
 

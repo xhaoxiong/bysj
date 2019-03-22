@@ -22,7 +22,7 @@ func NewOrderController() *OrderController {
 	return &OrderController{Service: services.NewOrderService()}
 }
 
-func (this *OrderController) GetList() (result *models.PageResult) {
+func (this *OrderController) PostList() (result *models.PageResult) {
 	if err := this.Ctx.ReadJSON(&result); err != nil {
 		return
 	}

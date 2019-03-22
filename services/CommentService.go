@@ -11,11 +11,11 @@ import (
 )
 
 type CommentService struct {
-	repo repositories.CommentRepositories
+	repo *repositories.CommentRepositories
 }
 
 func NewCommentService() *CommentService {
-	return &CommentService{repo: repositories.CommentRepositories{}}
+	return &CommentService{repo: repositories.NewCommentRepositories()}
 }
 
 func (this *CommentService) List(result *models.PageCommentResult) {

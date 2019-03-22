@@ -12,6 +12,9 @@ type Comment struct {
 	HotelId   string
 	HotelName string
 	UserId    uint
+	User      *User
 	Content   string
+	OrderId   uint
+	Order     *Order
 	Status    int //评论状态
 }

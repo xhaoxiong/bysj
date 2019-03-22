@@ -7,6 +7,7 @@ package admin
 
 import (
 	"bysj/services"
+	"bysj/web/middleware"
 	"github.com/kataras/iris"
 	"github.com/spf13/cast"
 )
@@ -28,9 +29,17 @@ func (this *AuthController) PostLogin() {
 		return
 	}
 
-	if err := this.Service.AdminLogin(m); err != nil {
+	if user, err := this.Service.AdminLogin(m); err != nil {
 		this.ReturnJson(10002, cast.ToString(err))
 		return
+	} else {
+
+		token := middleware.GenrateAdminToken(&user)
+		result := make(map[string]interface{})
+		result["code"] = 10000
+		result["message"] = "success"
+		result["token"] = token
+		this.Ctx.JSON(result)
+		return
 	}
-	this.ReturnSuccess()
 }
