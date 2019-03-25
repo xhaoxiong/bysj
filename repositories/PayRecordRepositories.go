@@ -19,7 +19,9 @@ func NewPayRecordRepositories() *PayRecordRepositories {
 }
 
 func (this *PayRecordRepositories) List(result *models.PagePayRecordResult) {
-	var record models.PayRecord
+	result.Code = 10000
+	result.Message = "success"
+	var record []models.PayRecord
 	qs := this.db
 	qc := this.db.Model(&models.PayRecord{})
 

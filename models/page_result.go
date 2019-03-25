@@ -32,15 +32,16 @@ type PageCommentResult struct {
 }
 
 type PagePayRecordResult struct {
-	Code      int         `json:"code"`
-	HotelId   string      `json:"hotel_id"`
-	Page      int         `json:"page"`
-	Message   string      `json:"message"`
-	Status    int         `json:"status"`
-	Per       int         `json:"per"`
-	Total     int         `json:"total"`
-	Search    string      `json:"search"`
-	CreatedAt string      `json:"created_at"`
-	EndAt     string      `json:"end_at"`
-	Data      interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Page    int         `json:"page"`
+	Message string      `json:"message"`
+	Status  int         `json:"status"`
+	Per     int         `json:"per"`
+	Total   int         `json:"total"`
+	Search  string      `json:"search"`
+	Data    interface{} `json:"data"`
+
+	UserId    uint   `json:"user_id"`
+	CreatedAt string `json:"created_at"`
+	EndAt     string `json:"end_at"`
 }

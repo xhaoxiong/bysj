@@ -45,14 +45,14 @@ func (this *OrderController) PostUpdate() {
 }
 
 func (this *OrderController) PostDelete() {
-	m := make(map[string]interface{})
+	m := make(map[string][]uint)
 
-	if err := this.Ctx.ReadJSON(m); err != nil {
+	if err := this.Ctx.ReadJSON(&m); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
 
-	if err := this.Service.Delete(m["ids"].([]uint)); err != nil {
+	if err := this.Service.Delete(m); err != nil {
 		this.ReturnJson(10002, cast.ToString(err))
 		return
 	}

@@ -35,6 +35,12 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 		qs = qs.Where("status = ?", result.Status)
 		qc = qc.Where("status = ?", result.Status)
 	}
+	s := "%" + result.Search + "%"
+	if result.Search != "" {
+		qs = qs.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
+		qc = qc.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
+	}
+
 	qs.Limit(result.Per).Preload("User").Offset((result.Page - 1) * result.Per).Find(&orders)
 	qc.Count(&result.Total)
 	result.Data = orders
@@ -56,6 +62,6 @@ func (this *OrderRepositories) Update(m map[string]interface{}) error {
 	return this.db.Model(&models.Order{}).Updates(m).Error
 }
 
-func (this *OrderRepositories) Delete(ids []uint) error {
-	return this.db.Where("id in (?)", ids).Unscoped().Delete(&models.Order{}).Error
+func (this *OrderRepositories) Delete(ids map[string][]uint) error {
+	return this.db.Where("id in (?)", ids["ids"]).Unscoped().Delete(&models.Order{}).Error
 }

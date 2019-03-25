@@ -30,6 +30,6 @@ func (this *OrderService) Update(m map[string]interface{}) error {
 	return this.repo.Update(m)
 }
 
-func (this *OrderService) Delete(ids []uint) error {
+func (this *OrderService) Delete(ids map[string][]uint) error {
 	return this.repo.Delete(ids)
 }
