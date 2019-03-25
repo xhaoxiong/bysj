@@ -11,6 +11,8 @@ type PayRecord struct {
 	gorm.Model
 	UserId   uint
 	UserName string
+	Prev     int
+	After    int
 	Amount   int
 	Content  string
 }
