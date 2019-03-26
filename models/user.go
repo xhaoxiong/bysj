@@ -26,6 +26,12 @@ type User struct {
 	IsBind int `gorm:"default:2"` //1绑定 2未绑定
 }
 
+//每日用户增量
+type UserIncrement struct {
+	Date           string
+	IncrementCount int
+}
+
 type UserInfo struct {
 	Id       int `json:"id"`
 	Userinfo struct {
