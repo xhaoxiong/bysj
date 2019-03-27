@@ -33,3 +33,7 @@ func (this *OrderService) Update(m map[string]interface{}) error {
 func (this *OrderService) Delete(ids map[string][]uint) error {
 	return this.repo.Delete(ids)
 }
+
+func (this *OrderService) NotPayCount(user_id int) int {
+	return this.repo.NotPayCount(user_id)
+}

@@ -23,11 +23,12 @@ func NewOrderController() *OrderController {
 	return &OrderController{Service: services.NewOrderService()}
 }
 
-func (this *OrderController) GetList() (result *models.PageResult) {
+func (this *OrderController) PostList() (result *models.PageResult) {
 	if err := this.Ctx.ReadJSON(&result); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
+	this.Service.List(result)
 	return
 }
 
@@ -48,7 +49,7 @@ func (this *OrderController) PostCreate() {
 
 func (this *OrderController) PostUpdate() {
 	m := make(map[string]interface{})
-	if err := this.Ctx.ReadJSON(m); err != nil {
+	if err := this.Ctx.ReadJSON(&m); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
@@ -57,4 +58,10 @@ func (this *OrderController) PostUpdate() {
 		this.ReturnJson(10002, cast.ToString(err))
 	}
 	this.ReturnSuccess()
+}
+
+func (this *OrderController) PostNotpayCount() {
+	userId := this.Ctx.FormValue("user_id")
+	count := this.Service.NotPayCount(cast.ToInt(userId))
+	this.ReturnSuccess("data", count)
 }

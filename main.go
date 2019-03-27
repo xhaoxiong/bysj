@@ -9,7 +9,6 @@ import (
 	"bysj/config"
 	"bysj/models"
 	"bysj/route"
-	"bysj/web/middleware"
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris"
 	"github.com/spf13/pflag"
@@ -41,9 +40,10 @@ func newApp() *iris.Application {
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"*"},
 	})
+
 	app.Use(crs) //
 	app.AllowMethods(iris.MethodOptions)
-	app.Use(middleware.GetJWT().Serve)
+	//app.Use(middleware.GetJWT().Serve)
 	app.Configure(iris.WithOptimizations)
 	return app
 }

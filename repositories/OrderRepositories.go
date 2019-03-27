@@ -65,3 +65,9 @@ func (this *OrderRepositories) Update(m map[string]interface{}) error {
 func (this *OrderRepositories) Delete(ids map[string][]uint) error {
 	return this.db.Where("id in (?)", ids["ids"]).Unscoped().Delete(&models.Order{}).Error
 }
+
+func (this *OrderRepositories) NotPayCount(user_id int) (count int) {
+	this.db.Model(&models.Order{}).Where("status = ? and user_id =?",
+		2, user_id).Count(&count)
+	return
+}
