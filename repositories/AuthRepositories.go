@@ -55,7 +55,6 @@ func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
 			user.Cate = u.Cate
 			user.IsBind = 1
 		}
-
 		if err := tx.Create(&user).Error; err != nil {
 			tx.Rollback()
 			return err
@@ -77,7 +76,7 @@ func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, 
 	}
 
 	if err := this.db.Where("mobile = ?", mobile).First(&user).Error; err == nil {
-		return errors.New("该手机号已经注册")
+		return errors.New("该手机号已经绑定")
 	}
 
 	if err := this.db.Where("openid = ?", openid).First(&user).Error; err != nil {

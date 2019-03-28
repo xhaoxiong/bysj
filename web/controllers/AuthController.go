@@ -2,17 +2,17 @@
 *@Author: haoxiongxiao
 *@Date: 2019/2/3
 *@Description: CREATE GO FILE controller
-*/
+ */
 package controllers
 
 import (
+	"bysj/models"
+	"bysj/services"
+	"bysj/services/sms_api_services"
 	"bysj/services/wechat_api_services"
+	"bysj/web/middleware"
 	"github.com/kataras/iris"
 	"github.com/lexkong/log"
-	"bysj/services"
-	"bysj/models"
-	"bysj/services/sms_api_services"
-	"bysj/web/middleware"
 	"github.com/spf13/cast"
 )
 
@@ -35,15 +35,14 @@ func (this *AuthController) PostOpenid() {
 		this.ReturnJson(10001, "获取用户信息错误")
 		return
 	}
-	token := middleware.GenerateToken(userinfo.Openid, userinfo.SessionKey)
+	token := middleware.GenerateToken(userinfo.Openid)
 	m := make(map[string]interface{})
 
 	m["openid"] = userinfo.Openid
 	m["sessionKey"] = userinfo.SessionKey
 	m["token"] = token
-	this.ReturnSuccess("userinfo", m)
+	this.ReturnSuccess("data", m)
 }
-
 func (this *AuthController) PostUserinfo() {
 	info := models.UserInfo{}
 	if err := this.Ctx.ReadJSON(&info); err != nil {
@@ -69,15 +68,16 @@ func (this *AuthController) PostBind() {
 
 	openid := this.Ctx.FormValue("openid")
 	code := this.Ctx.FormValue("code")
-	sessionKey := this.Ctx.FormValue("sessionKey")
+	//sessionKey := this.Ctx.FormValue("sessionKey")
 	if err := this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
 	}
-	token := middleware.GenerateToken(openid, sessionKey)
+	token := middleware.GenerateToken(openid)
+
 	result := make(map[string]interface{})
 	result["message"] = "success"
-	result["status"] = 10000
+	result["code"] = 10000
 	result["token"] = token
 	this.Ctx.JSON(result)
 	return
@@ -97,11 +97,11 @@ func (this *AuthController) PostBindCancel() {
 
 func (this *AuthController) PostGenerateToken() {
 	openid := this.Ctx.FormValue("openid")
-	sessionKey := this.Ctx.FormValue("sessionKey")
-	token := middleware.GenerateToken(openid, sessionKey)
+	token := middleware.GenerateToken(openid)
+
 	m := make(map[string]interface{})
 	m["token"] = token
-	this.Ctx.JSON(m)
+	this.ReturnSuccess("data", m)
 	return
 }
 

@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/2/12
 *@Description: CREATE GO FILE middleware
-*/
+ */
 package middleware
 
 import (
@@ -56,7 +56,7 @@ func GetJWT() *jwtmiddleware.Middleware {
 				strings.Contains(ctx.Request().RequestURI, "/auth/bind") ||
 				strings.Contains(ctx.Request().RequestURI, "/auth/send/sms") ||
 				strings.Contains(ctx.Request().RequestURI, "/auth/userinfo") ||
-				strings.Contains(ctx.Request().RequestURI, "/generate/token") ||
+				strings.Contains(ctx.Request().RequestURI, "/auth/generate/token") ||
 				strings.Contains(ctx.Request().RequestURI, "/api/admin/auth/login") {
 				ctx.Next()
 
@@ -88,15 +88,15 @@ func GenrateAdminToken(user *models.AdminUser) string {
 }
 
 //生成token
-func GenerateToken(openid, sessionKey string) string {
+func GenerateToken(openid string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"openid": openid, //openid
-		//"sessionKey": sessionKey,                                               //sessionKey
-		"iss": "iris_bysj",                                              //签发者
-		"iat": time.Now().Unix(),                                        //签发时间
-		"jti": "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
-		"exp": time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
+		"openid": openid,                                                   //openid
+		"iss":    "iris_bysj",                                              //签发者
+		"iat":    time.Now().Unix(),                                        //签发时间
+		"jti":    "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
+		"exp":    time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
 	})
+
 	tokenString, _ := token.SignedString([]byte(jwtKey))
 	fmt.Println("签发时间：", time.Now().Unix())
 	fmt.Println("到期时间：", time.Now().Add(10 * time.Hour * time.Duration(1)).Unix())
