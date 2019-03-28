@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/18
 *@Description: CREATE GO FILE models
-*/
+ */
 package models
 
 type PageResult struct {
@@ -44,4 +44,14 @@ type PagePayRecordResult struct {
 	UserId    uint   `json:"user_id"`
 	CreatedAt string `json:"created_at"`
 	EndAt     string `json:"end_at"`
+}
+
+type PageFeedBackResult struct {
+	Code    int         `json:"code"`
+	Page    int         `json:"page"`
+	Message string      `json:"message"`
+	Per     int         `json:"per"`
+	Total   int         `json:"total"`
+	Search  string      `json:"search"`
+	Data    interface{} `json:"data"`
 }
