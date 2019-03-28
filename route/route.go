@@ -13,6 +13,7 @@ import (
 )
 
 func InitRouter(app *iris.Application) {
+
 	mvc.New(app.Party("/auth")).Handle(controllers.NewAuthController())
 	mvc.New(app.Party("/hotel")).Handle(controllers.NewHotelController())
 	mvc.New(app.Party("/order")).Handle(controllers.NewOrderController())

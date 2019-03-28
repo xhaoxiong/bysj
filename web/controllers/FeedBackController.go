@@ -23,8 +23,7 @@ func NewFeedBackController() *FeedBackController {
 
 func (this *FeedBackController) PostCreate() {
 	var feedback models.FeedBack
-
-	if err := this.Ctx.ReadJSON(&feedback).Error(); err != nil {
+	if err := this.Ctx.ReadJSON(&feedback); err != nil {
 		this.ReturnJson(10001, "反馈失败")
 		return
 	}
