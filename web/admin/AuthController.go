@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/20
 *@Description: CREATE GO FILE admin
-*/
+ */
 package admin
 
 import (
@@ -39,6 +39,7 @@ func (this *AuthController) PostLogin() {
 		result["code"] = 10000
 		result["message"] = "success"
 		result["token"] = token
+		result["userinfo"] = user
 		this.Ctx.JSON(result)
 		return
 	}

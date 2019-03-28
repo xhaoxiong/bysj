@@ -139,7 +139,7 @@ func (this *AuthRepositories) AdminLogin(m map[string]interface{}) (user models.
 		m["username"], m["password"]).First(&adminUser).Error; err != nil {
 		return adminUser, err
 	}
-
+	this.db.Model(&adminUser).Updates(map[string]interface{}{"updated_at": time.Now()})
 	return adminUser, nil
 }
 

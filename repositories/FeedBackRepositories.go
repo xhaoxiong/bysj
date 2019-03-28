@@ -27,7 +27,7 @@ func (this *FeedBackRepositories) List(result *models.PageFeedBackResult) {
 	result.Message = "success"
 	var feedback []models.FeedBack
 	qs := this.db
-
+	qc := this.db.Model(&models.FeedBack{})
 	if result.Per == 0 {
 		result.Per = 10
 	}
@@ -38,10 +38,11 @@ func (this *FeedBackRepositories) List(result *models.PageFeedBackResult) {
 
 	if result.Search != "" {
 		qs = qs.Where("content like ?", "%"+result.Search+"%")
+		qc = qc.Where("content like ?", "%"+result.Search+"%")
 	}
 
-	qs.Limit(result.Per).Offset((result.Page - 1) * result.Per).Find(&feedback)
+	qs.Limit(result.Per).Offset((result.Page - 1) * result.Per).Preload("User").Find(&feedback)
+	qc.Count(&result.Total)
 	result.Data = feedback
-	result.Total = len(feedback)
 
 }

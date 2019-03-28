@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/1/28
 *@Description: CREATE GO FILE models
-*/
+ */
 package models
 
 import "github.com/jinzhu/gorm"
@@ -49,5 +49,5 @@ type UserInfo struct {
 type AdminUser struct {
 	gorm.Model
 	Username string
-	Password string
+	Password string `json:"-"`
 }

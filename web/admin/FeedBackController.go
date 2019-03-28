@@ -36,7 +36,7 @@ func (this *FeedBackController) PostCreate() {
 	this.ReturnSuccess()
 }
 
-func (this *FeedBackController) List() (result *models.PageFeedBackResult) {
+func (this *FeedBackController) PostList() (result *models.PageFeedBackResult) {
 	if err := this.Ctx.ReadJSON(&result); err != nil {
 		this.ReturnJson(10001, "获取列表失败")
 		return

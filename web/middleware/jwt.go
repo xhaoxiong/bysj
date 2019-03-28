@@ -63,7 +63,7 @@ func GetJWT() *jwtmiddleware.Middleware {
 			} else {
 				result := make(map[string]interface{})
 				result["msg"] = "认证失败"
-				result["status"] = 10014
+				result["code"] = 10014
 				ctx.JSON(result)
 			}
 

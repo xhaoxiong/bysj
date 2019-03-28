@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/25
 *@Description: CREATE GO FILE admin
-*/
+ */
 package admin
 
 import (
@@ -44,5 +44,5 @@ func (this *DashBoardController) PostOrderTrend() {
 	var orderVolume []models.OrderVolume
 	this.Service.OrderTrend(&orderVolume)
 
-	this.ReturnSuccess()
+	this.ReturnSuccess("data", orderVolume)
 }
