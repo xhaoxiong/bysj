@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/2/3
 *@Description: CREATE GO FILE services
-*/
+ */
 package services
 
 import (
@@ -18,7 +18,7 @@ func NewAuthServices() *AuthServices {
 	return &AuthServices{repo: repositories.NewAuthRepositories()}
 }
 
-func (this *AuthServices) CreateUser(info models.UserInfo) error {
+func (this *AuthServices) CreateUser(info *models.UserInfo) (models.User,error) {
 	return this.repo.CreateUser(info)
 }
 
@@ -36,4 +36,8 @@ func (this *AuthServices) BindCancel(openid string) bool {
 
 func (this *AuthServices) AdminLogin(m map[string]interface{}) (user models.AdminUser, err error) {
 	return this.repo.AdminLogin(m)
+}
+
+func (this *AuthServices) UserinfoByOpenid(u *models.User) error {
+	return this.repo.UserinfoByOpenid(u)
 }

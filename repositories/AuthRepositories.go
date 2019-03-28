@@ -11,6 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/kataras/iris/core/errors"
 	"github.com/lexkong/log"
+	"time"
 )
 
 type AuthRepositories struct {
@@ -21,7 +22,7 @@ func NewAuthRepositories() *AuthRepositories {
 	return &AuthRepositories{db: models.DB.Mysql}
 }
 
-func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
+func (this *AuthRepositories) CreateUser(info *models.UserInfo) (models.User, error) {
 
 	user := models.User{}
 	user.Openid = info.Openid
@@ -30,41 +31,39 @@ func (this *AuthRepositories) CreateUser(info models.UserInfo) error {
 	user.Avatar = info.Userinfo.AvatarUrl
 	user.City = info.Userinfo.City
 	user.Country = info.Userinfo.Country
-
+	user.NickName = info.Userinfo.NickName
 	if this.db.Where("openid = ?", user.Openid).
 		First(&models.User{}).RecordNotFound() {
 		if err := this.db.Create(&user).Error; err != nil {
 			log.Error("添加用户失败", err)
-			return err
+			return user, err
 		}
-		return nil
+		return user, nil
 	} else {
 
 		tx := this.db.Begin()
 		u := models.User{}
 		this.db.Where("openid = ?", user.Openid).First(&u)
-
-		if err := tx.Where("openid = ?", user.Openid).Unscoped().Delete(&models.User{}).Error; err != nil {
-			tx.Rollback()
-			return err
-		}
-		if u.IsBind == 1 {
-			user.Mobile = u.Mobile
-			user.CardNumber = u.CardNumber
-			user.Username = u.Username
-			user.Cate = u.Cate
-			user.IsBind = 1
-		}
-		if err := tx.Create(&user).Error; err != nil {
-			tx.Rollback()
-			return err
+		m := make(map[string]interface{})
+		m["id"] = u.ID
+		m["openid"] = user.Openid
+		m["province"] = user.Province
+		m["gender"] = user.Gender
+		m["city"] = user.City
+		m["country"] = user.Country
+		m["nick_name"] = user.NickName
+		m["created_at"] = u.CreatedAt
+		m["avatar"] = user.Avatar
+		m["updated_at"] = time.Now()
+		if err := tx.Model(&models.User{}).Updates(m).Error; err != nil {
+			return user, err
 		}
 
 		if err := tx.Commit().Error; err != nil {
-			return err
+			return user, err
 		}
 
-		return nil
+		return user, nil
 	}
 }
 
@@ -142,4 +141,8 @@ func (this *AuthRepositories) AdminLogin(m map[string]interface{}) (user models.
 	}
 
 	return adminUser, nil
+}
+
+func (this *AuthRepositories) UserinfoByOpenid(u *models.User) error {
+	return this.db.Where("openid = ?", u.Openid).First(&u).Error
 }

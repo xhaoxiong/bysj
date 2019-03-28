@@ -44,19 +44,20 @@ func (this *AuthController) PostOpenid() {
 	this.ReturnSuccess("data", m)
 }
 func (this *AuthController) PostUserinfo() {
-	info := models.UserInfo{}
+	info := &models.UserInfo{}
 	if err := this.Ctx.ReadJSON(&info); err != nil {
 		log.Error("解析参数错误:", err)
 		this.ReturnJson(10001, "解析参数错误")
 		return
 	}
 
-	if err := this.AuthServices.CreateUser(info); err != nil {
+	if u, err := this.AuthServices.CreateUser(info); err != nil {
 		this.ReturnJson(10001, "添加用户失败")
 		return
+	} else {
+		this.ReturnSuccess("data", u)
 	}
 
-	this.ReturnSuccess()
 }
 
 //绑定手机号码
@@ -113,4 +114,15 @@ func (this *AuthController) PostSendSms() {
 	this.SmsApiService.SendSms(code, mobile)
 
 	this.ReturnSuccess()
+}
+
+func (this *AuthController) PostUser() {
+	u := &models.User{}
+
+	u.Openid = this.Ctx.FormValue("openid")
+	if err := this.AuthServices.UserinfoByOpenid(u); err != nil {
+		this.ReturnJson(10001, "获取用户信息错误")
+		return
+	}
+	this.ReturnSuccess("data", u)
 }
