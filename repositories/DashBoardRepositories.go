@@ -23,14 +23,16 @@ func NewDashBoardRepositories() *DashBoardRepositories {
 //今日订单成交量
 func (this *DashBoardRepositories) OrderCount() (count int) {
 
-	this.db.Model(&models.Order{}).Where("created_at = ? and status = ?", time.Now().
+	this.db.Model(&models.Order{}).Where("created_at >= ? and created_at<? and status = ?", time.Now().
+		Format("2006-01-02"), time.Now().AddDate(0, 0, +1).
 		Format("2006-01-02"), 3).Count(&count)
 	return
 }
 
 //新增用户数
 func (this *DashBoardRepositories) UserCount() (count int) {
-	this.db.Model(&models.User{}).Where("created_at = ?", time.Now().
+	this.db.Model(&models.User{}).Where("created_at >= ? and created_at<?", time.Now().
+		Format("2006-01-02"), time.Now().AddDate(0, 0, +1).
 		Format("2006-01-02")).Count(&count)
 	return
 }
@@ -39,7 +41,8 @@ func (this *DashBoardRepositories) UserCount() (count int) {
 func (this *DashBoardRepositories) AmountFlow() (allAmount int) {
 	var orders []models.Order
 
-	this.db.Where("status = ? and created_at = ?", 3, time.Now().
+	this.db.Where("status = ? and created_at >= ? and created_at <?", 3, time.Now().
+		Format("2006-01-02"), time.Now().AddDate(0, 0, +1).
 		Format("2006-01-02")).Find(&orders)
 
 	for i, _ := range orders {
@@ -48,6 +51,7 @@ func (this *DashBoardRepositories) AmountFlow() (allAmount int) {
 
 	return allAmount
 }
+
 //最近七日订单成交量
 func (this *DashBoardRepositories) OrderTrend(orderVolume *[]models.OrderVolume) {
 	d := 8 * 24

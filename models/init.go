@@ -41,7 +41,6 @@ func openMysqlDB(username, password, addr, name string) *gorm.DB {
 		true,
 		//"Asia/Shanghai"),
 		"Local")
-
 	db, err := gorm.Open("mysql", config)
 	if err != nil {
 		log.Errorf(err, "Database connection failed. Database name: %s", name)
@@ -57,9 +56,11 @@ func openMysqlDB(username, password, addr, name string) *gorm.DB {
 func setupDB(db *gorm.DB) {
 	db.LogMode(viper.GetBool("gormlog"))
 	//db.DB().SetMaxOpenConns(20000) // 用于设置最大打开的连接数，默认值为0表示不限制.设置最大的连接数，可以避免并发太高导致连接mysql出现too many connections的错误。
-	db.DB().SetMaxIdleConns(0) // 用于设置闲置的连接数.设置闲置的连接数则当开启的一个连接使用完成后可以放在池里等候下一次使用。
+	db.DB().SetMaxIdleConns(2) // 用于设置闲置的连接数.设置闲置的连接数则当开启的一个连接使用完成后可以放在池里等候下一次使用。
 	db.SingularTable(true)     //设置表名不为负数
-	autoMigrate(db)
+
+	//autoMigrate(db)
+
 }
 
 func (db *Database) Init() {
