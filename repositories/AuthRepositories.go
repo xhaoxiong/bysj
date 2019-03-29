@@ -67,19 +67,19 @@ func (this *AuthRepositories) CreateUser(info *models.UserInfo) (models.User, er
 	}
 }
 
-func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, code string) error {
-	user := models.User{}
+func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, code string) (*models.User, error) {
+	user := &models.User{}
 
 	if value := redi.GetStringValue(mobile); code != value {
-		return errors.New("请输入正确的短信验证码")
+		return nil, errors.New("请输入正确的短信验证码")
 	}
 
 	if err := this.db.Where("mobile = ?", mobile).First(&user).Error; err == nil {
-		return errors.New("该手机号已经绑定")
+		return nil, errors.New("该手机号已经绑定")
 	}
 
 	if err := this.db.Where("openid = ?", openid).First(&user).Error; err != nil {
-		return errors.New("用户未授权")
+		return nil, errors.New("用户未授权")
 	}
 
 	if err := this.db.Model(&models.User{}).Where("id = ?", user.ID).Updates(map[string]interface{}{
@@ -89,9 +89,10 @@ func (this *AuthRepositories) BindUser(mobile, username, cate, cardNum, openid, 
 		"mobile":      mobile,
 		"is_bind":     1,
 	}).Error; err != nil {
-		return errors.New("绑定失败")
+		return user, errors.New("绑定失败")
 	}
-	return nil
+	this.db.Where("id = ?", user.ID).First(&user)
+	return user, nil
 }
 
 func (this *AuthRepositories) BindUserCheck(openid string) bool {

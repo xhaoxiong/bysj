@@ -2,11 +2,12 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/18
 *@Description: CREATE GO FILE repositories
-*/
+ */
 package repositories
 
 import (
 	"bysj/models"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -47,19 +48,45 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 }
 
 func (this *OrderRepositories) Insert(order *models.Order) error {
-
-	if err := this.db.Create(&order).Error; err != nil {
+	u := models.User{}
+	if err := models.GetMysqlDB().Where("id = ?", order.UserId).First(&u).Error; err != nil || u.IsBind != 1 {
 		return err
 	}
-	u := models.User{}
 
-	this.db.Where("id = ?", order.UserId).First(&u)
+	fmt.Println("创建订单")
+	if err := models.GetMysqlDB().Create(order).Error; err != nil {
+		return err
+	}
+
+	models.GetMysqlDB().Where("id = ?", order.UserId).First(&u)
 	order.User = &u
+
 	return nil
 }
 
+
 func (this *OrderRepositories) Update(m map[string]interface{}) error {
-	return this.db.Model(&models.Order{}).Updates(m).Error
+	var order models.Order
+	var payRecord models.PayRecord
+	var user models.User
+	if err := this.db.Model(&models.Order{}).Updates(m).Error; err != nil {
+		return err
+	}
+	this.db.Where("id = ?", m["ID"]).First(&order)
+	this.db.Where("id = ?", order.UserId).First(&user)
+	if order.Status == 3 {
+		payRecord.Amount = order.Amount*100
+
+		payRecord.Content = fmt.Sprintf("昵称为:%s的用户为订单号为:%s支付了:%d",
+			user.NickName, order.OrderNumber, order.Amount/100)
+		payRecord.UserId = user.ID
+		payRecord.UserName = user.Username
+		if err := this.db.Create(&payRecord).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+
 }
 
 func (this *OrderRepositories) Delete(ids map[string][]uint) error {

@@ -22,7 +22,7 @@ func (this *AuthServices) CreateUser(info *models.UserInfo) (models.User,error) 
 	return this.repo.CreateUser(info)
 }
 
-func (this *AuthServices) BindUser(mobile, username, cate, cardNum, openid, code string) error {
+func (this *AuthServices) BindUser(mobile, username, cate, cardNum, openid, code string)  (*models.User, error) {
 	return this.repo.BindUser(mobile, username, cate, cardNum, openid, code)
 }
 

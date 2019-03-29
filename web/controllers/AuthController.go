@@ -70,18 +70,20 @@ func (this *AuthController) PostBind() {
 	openid := this.Ctx.FormValue("openid")
 	code := this.Ctx.FormValue("code")
 	//sessionKey := this.Ctx.FormValue("sessionKey")
-	if err := this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code); err != nil {
+	if user, err := this.AuthServices.BindUser(mobile, username, cate, cardNum, openid, code); err != nil {
 		this.ReturnJson(10001, cast.ToString(err))
 		return
-	}
-	token := middleware.GenerateToken(openid)
+	} else {
+		token := middleware.GenerateToken(openid)
 
-	result := make(map[string]interface{})
-	result["message"] = "success"
-	result["code"] = 10000
-	result["token"] = token
-	this.Ctx.JSON(result)
-	return
+		result := make(map[string]interface{})
+		result["message"] = "success"
+		result["code"] = 10000
+		result["token"] = token
+		result["userinfo"] = user
+		this.Ctx.JSON(result)
+		return
+	}
 }
 
 func (this *AuthController) PostBindCheck() {
