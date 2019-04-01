@@ -10,7 +10,6 @@ import (
 	"bysj/models"
 	"bysj/route"
 	"bysj/web/middleware"
-	"fmt"
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris"
 	"github.com/spf13/pflag"
@@ -28,7 +27,7 @@ func main() {
 		panic(err)
 	}
 	models.DB.Init()
-	fmt.Println("完成初始化")
+
 	app := newApp()
 	route.InitRouter(app)
 	app.Run(iris.Addr(viper.GetString("addr")))

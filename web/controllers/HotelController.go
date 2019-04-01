@@ -2,22 +2,26 @@
 *@Author: haoxiongxiao
 *@Date: 2019/2/11
 *@Description: CREATE GO FILE controllers
-*/
+ */
 package controllers
 
 import (
+	"bysj/services"
 	"bysj/services/hotel_api_services"
+	"fmt"
 	"github.com/kataras/iris"
 	"github.com/spf13/cast"
+	"strings"
 )
 
 type HotelController struct {
-	Ctx iris.Context
+	Ctx     iris.Context
+	Service *services.HotelService
 	Common
 }
 
 func NewHotelController() *HotelController {
-	return &HotelController{}
+	return &HotelController{Service: services.NewHotelService()}
 }
 
 func (this *HotelController) PostSearch() {
@@ -77,4 +81,22 @@ func (this *HotelController) PostRoomPrice() {
 	}
 
 	this.ReturnSuccess("data", res.ShowapiResBody.RoomInfo)
+}
+
+func (this *HotelController) PostCityCheck() {
+	cityName := this.Ctx.FormValue("city")
+	split := strings.Split(cityName, "市")
+	t := split[0]
+	if len(split) == 0 {
+		t = cityName
+	}
+
+	fmt.Println(split)
+	if this.Service.CheckCity(t) {
+		this.ReturnSuccess()
+		return
+	} else {
+		this.ReturnJson(10001, "该城市暂时不支持预订酒店")
+		return
+	}
 }

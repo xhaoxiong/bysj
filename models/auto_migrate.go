@@ -24,6 +24,7 @@ func autoMigrate(db *gorm.DB) {
 		&Comment{},
 		&FeedBack{},
 		&OrderVolume{},
+		&City{},
 	).Error;
 		err != nil {
 		log.Error("自动建表失败", err)
