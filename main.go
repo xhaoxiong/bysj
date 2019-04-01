@@ -29,7 +29,9 @@ func main() {
 	models.DB.Init()
 
 	app := newApp()
+
 	route.InitRouter(app)
+
 	app.Run(iris.Addr(viper.GetString("addr")))
 }
 
@@ -43,8 +45,11 @@ func newApp() *iris.Application {
 	})
 
 	app.Use(crs) //
+	app.StaticWeb("/assets", "./web/views/admin/assets")
+	app.RegisterView(iris.HTML("./web/views/admin", ".html"))
 	app.AllowMethods(iris.MethodOptions)
 	app.Use(middleware.GetJWT().Serve)
 	app.Configure(iris.WithOptimizations)
+
 	return app
 }

@@ -59,7 +59,7 @@ func setupDB(db *gorm.DB) {
 	db.DB().SetMaxIdleConns(2) // 用于设置闲置的连接数.设置闲置的连接数则当开启的一个连接使用完成后可以放在池里等候下一次使用。
 	db.SingularTable(true)     //设置表名不为负数
 
-	autoMigrate(db)
+	//autoMigrate(db)
 
 }
 

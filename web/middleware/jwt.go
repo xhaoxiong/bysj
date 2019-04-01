@@ -58,7 +58,8 @@ func GetJWT() *jwtmiddleware.Middleware {
 				strings.Contains(ctx.Request().RequestURI, "/auth/userinfo") ||
 				strings.Contains(ctx.Request().RequestURI, "/auth/generate/token") ||
 				strings.Contains(ctx.Request().RequestURI, "/api/admin/auth/login") ||
-				strings.Contains(ctx.Request().RequestURI, "/hotel/city/check") {
+				strings.Contains(ctx.Request().RequestURI, "/hotel/city/check") ||
+				strings.Contains(ctx.Request().RequestURI, "/admin") {
 				ctx.Next()
 
 			} else {

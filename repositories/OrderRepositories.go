@@ -42,7 +42,11 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 		qc = qc.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
 	}
 
-	qs.Where("user_id = ?", result.UserId).Limit(result.Per).Preload("User").Offset((result.Page - 1) * result.Per).Find(&orders)
+	if result.UserId != 0 {
+		qs = qs.Where("user_id = ?", result.UserId)
+	}
+
+	qs.Limit(result.Per).Preload("User").Offset((result.Page - 1) * result.Per).Find(&orders)
 	qc.Count(&result.Total)
 	result.Data = orders
 }

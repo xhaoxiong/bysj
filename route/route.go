@@ -19,6 +19,7 @@ func InitRouter(app *iris.Application) {
 	mvc.New(app.Party("/order")).Handle(controllers.NewOrderController())
 	mvc.New(app.Party("/comment")).Handle(controllers.NewCommentController())
 	mvc.New(app.Party("/feedback")).Handle(controllers.NewFeedBackController())
+	mvc.New(app.Party("/admin")).Handle(admin.NewIndexController())
 	mvc.New(app.Party("/api/admin/user")).Handle(admin.NewUserController())
 	mvc.New(app.Party("/api/admin/order")).Handle(admin.NewOrderController())
 	mvc.New(app.Party("/api/admin/comment")).Handle(admin.NewCommentController())
