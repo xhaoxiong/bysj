@@ -63,7 +63,7 @@ func (this *AuthRepositories) CreateUser(info *models.UserInfo) (models.User, er
 			return user, err
 		}
 
-		return user, nil
+		return u, nil
 	}
 }
 

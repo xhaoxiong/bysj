@@ -18,13 +18,13 @@ func NewHotelRepositories() *HotelRepositories {
 	return &HotelRepositories{db: models.GetMysqlDB()}
 }
 
-func (this *HotelRepositories) CheckCity(cityName string) (bool) {
+func (this *HotelRepositories) CheckCity(cityName string) (string, bool) {
 	var city []models.City
 
 	this.db.Where("val like ?", cityName+"%").Find(&city)
 
 	if len(city) > 0 {
-		return true
+		return city[0].Val, true
 	}
-	return false
+	return "", false
 }

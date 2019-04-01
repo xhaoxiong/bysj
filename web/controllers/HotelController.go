@@ -90,8 +90,10 @@ func (this *HotelController) PostCityCheck() {
 		t = cityName
 	}
 
-	if this.Service.CheckCity(t) {
-		this.ReturnSuccess()
+	if realName, ok := this.Service.CheckCity(t); ok {
+		m := make(map[string]interface{})
+		m["realName"] = realName
+		this.ReturnSuccess("data", m)
 		return
 	} else {
 		this.ReturnJson(10001, "该城市暂时不支持预订酒店")

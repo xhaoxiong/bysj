@@ -15,6 +15,6 @@ func NewHotelService() *HotelService {
 	return &HotelService{repo: repositories.NewHotelRepositories()}
 }
 
-func (this *HotelService) CheckCity(cityName string) bool {
+func (this *HotelService) CheckCity(cityName string) (string, bool) {
 	return this.repo.CheckCity(cityName)
 }
