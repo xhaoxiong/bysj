@@ -44,7 +44,6 @@ func (this *CommentRepositories) List(result *models.PageCommentResult) {
 	qc.Count(&result.Total)
 	qs.Limit(result.Per).Preload("User").Preload("Order").Offset((result.Page - 1) * result.Per).Find(&comments)
 	result.Data = comments
-	return
 }
 
 func (this *CommentRepositories) Delete(ids []uint) error {

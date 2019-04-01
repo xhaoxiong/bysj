@@ -46,7 +46,6 @@ func (this *PayRecordRepositories) List(result *models.PagePayRecordResult) {
 	qc.Count(&result.Total)
 	qs.Limit(result.Per).Offset((result.Page - 1) * result.Per).Find(&record)
 	result.Data = record
-	return
 }
 
 func (this *PayRecordRepositories) Create(record *models.PayRecord) error {

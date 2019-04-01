@@ -45,7 +45,7 @@ func (this *DashBoardRepositories) AmountFlow() (allAmount int) {
 		Format("2006-01-02"), time.Now().AddDate(0, 0, +1).
 		Format("2006-01-02")).Find(&orders)
 
-	for i, _ := range orders {
+	for i:= range orders {
 		allAmount += orders[i].Amount
 	}
 
@@ -58,5 +58,4 @@ func (this *DashBoardRepositories) OrderTrend(orderVolume *[]models.OrderVolume)
 	s, _ := time.ParseDuration("-" + cast.ToString(d) + "h")
 	date := time.Now().Add(s).Format("2006-01-02")
 	this.db.Where("date >=?", date).Order("date asc").Find(&orderVolume)
-	return
 }

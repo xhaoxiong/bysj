@@ -42,7 +42,7 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 		qc = qc.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
 	}
 
-	qs.Limit(result.Per).Preload("User").Offset((result.Page - 1) * result.Per).Find(&orders)
+	qs.Where("user_id = ?", result.UserId).Limit(result.Per).Preload("User").Offset((result.Page - 1) * result.Per).Find(&orders)
 	qc.Count(&result.Total)
 	result.Data = orders
 }
@@ -64,7 +64,6 @@ func (this *OrderRepositories) Insert(order *models.Order) error {
 	return nil
 }
 
-
 func (this *OrderRepositories) Update(m map[string]interface{}) error {
 	var order models.Order
 	var payRecord models.PayRecord
@@ -75,7 +74,7 @@ func (this *OrderRepositories) Update(m map[string]interface{}) error {
 	this.db.Where("id = ?", m["ID"]).First(&order)
 	this.db.Where("id = ?", order.UserId).First(&user)
 	if order.Status == 3 {
-		payRecord.Amount = order.Amount*100
+		payRecord.Amount = order.Amount * 100
 
 		payRecord.Content = fmt.Sprintf("昵称为:%s的用户为订单号为:%s支付了:%d",
 			user.NickName, order.OrderNumber, order.Amount/100)

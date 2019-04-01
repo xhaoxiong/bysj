@@ -62,7 +62,7 @@ func CreateDB() {
 	if err != nil {
 		log.Errorf(err, "创建表%s失败", name)
 	} else {
-		fmt.Println("Created Database %s  created", name)
+		fmt.Printf("Created Database %s  created", name)
 	}
 	defer db.Close()
 }

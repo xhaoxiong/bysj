@@ -83,7 +83,7 @@ func InitMysql() *gorm.DB {
 }
 
 func keepAlive(dbc *gorm.DB) {
-	for true {
+	for {
 		dbc.DB().Ping()
 		time.Sleep(60 * time.Second)
 	}
