@@ -91,11 +91,11 @@ func (this *DetailApiService) GetHotelDetail(hotelId string) (DetailResParams, e
 	s, err := res.Post()
 
 	if err != nil {
-		panic(err)
+		return this.ResParams, err
 	}
 
 	if err := json.Unmarshal([]byte(s), &this.ResParams); err != nil {
-		panic(err)
+		return this.ResParams, err
 	}
 	if this.ResParams.ShowapiResCode == 0 {
 		return this.ResParams, nil

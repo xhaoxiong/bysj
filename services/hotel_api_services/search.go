@@ -20,7 +20,7 @@ type SearchApiServices struct {
 }
 
 type SearchRequestParams struct {
-	KeyWord      string `json:"keyWords"`      //查询关键字，酒店名称、位置、品牌等
+	KeyWord      string `json:"keyWords"`     //查询关键字，酒店名称、位置、品牌等
 	Page         string `json:"page"`         //页码
 	CityName     string `json:"cityName"`     //城市
 	IDate        string `json:"iDate"`        //入住时间，格式为：YYYY-MM-DD（默认2天后）
@@ -96,11 +96,11 @@ func (this *SearchApiServices) GetSearchDataServices() (res SearchRes, err error
 
 	s, err := req.Post()
 	if err != nil {
-		panic(err)
+		return res, err
 	}
 
 	if err := json.Unmarshal([]byte(s), &this.Res); err != nil {
-		panic(err)
+		return res, err
 	}
 
 	if this.Res.ShowapiResCode == 0 {

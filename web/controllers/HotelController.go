@@ -8,7 +8,6 @@ package controllers
 import (
 	"bysj/services"
 	"bysj/services/hotel_api_services"
-	"fmt"
 	"github.com/kataras/iris"
 	"github.com/spf13/cast"
 	"strings"
@@ -91,7 +90,6 @@ func (this *HotelController) PostCityCheck() {
 		t = cityName
 	}
 
-	fmt.Println(split)
 	if this.Service.CheckCity(t) {
 		this.ReturnSuccess()
 		return

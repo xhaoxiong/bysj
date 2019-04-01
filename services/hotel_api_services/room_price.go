@@ -105,11 +105,11 @@ func (this *roomPriceApiService) GetRoomPrice() (RoomPriceResParams, error) {
 
 	s, err := req.Post()
 	if err != nil {
-		panic(err)
+		return this.ResParams, err
 	}
 
 	if err := json.Unmarshal([]byte(s), &this.ResParams); err != nil {
-		panic(err)
+		return this.ResParams, err
 	}
 	if this.ResParams.ShowapiResCode == 0 {
 		return this.ResParams, nil
