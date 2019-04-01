@@ -9,6 +9,7 @@ import (
 	"bysj/config"
 	"bysj/models"
 	"bysj/route"
+	"bysj/services"
 	"bysj/web/middleware"
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris"
@@ -26,6 +27,7 @@ func main() {
 	if err := config.Init(*cfg); err != nil {
 		panic(err)
 	}
+	go services.SyncDashBoard()
 	models.DB.Init()
 
 	app := newApp()

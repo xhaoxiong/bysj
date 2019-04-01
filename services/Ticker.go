@@ -17,26 +17,14 @@ func SyncDashBoard() {
 		tx := models.GetMysqlDB().Begin()
 		yesterDay := time.Now().Add(s).Format("2006-01-02")
 		orderTotal := 0
-		userTotal := 0
 		models.GetMysqlDB().Model(&models.Order{}).Where("created_at >= ?", yesterDay).
 			Where("created_at < ?", time.Now().Format("2006-01-02")).Count(&orderTotal)
-		models.GetMysqlDB().Model(&models.User{}).Where("created_at >= ?", yesterDay).
-			Where("created_at < ?", time.Now().Format("2006-01-02")).Count(&userTotal)
-		var userIncreament models.UserIncrement
 		var orderVolume models.OrderVolume
 
 		orderVolume.Date = yesterDay
 		orderVolume.Volume = orderTotal
 
-		userIncreament.Date = yesterDay
-		userIncreament.IncrementCount = userTotal
-
-		if err := tx.Create(&userIncreament).Error; err != nil {
-			tx.Rollback()
-			return err
-		}
-
-		if err := tx.Create(&orderTotal).Error; err != nil {
+		if err := tx.Create(&orderVolume).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
