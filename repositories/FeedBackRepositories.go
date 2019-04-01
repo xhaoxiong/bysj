@@ -41,7 +41,7 @@ func (this *FeedBackRepositories) List(result *models.PageFeedBackResult) {
 		qc = qc.Where("content like ?", "%"+result.Search+"%")
 	}
 
-	qs.Limit(result.Per).Offset((result.Page - 1) * result.Per).Preload("User").Find(&feedback)
+	qs.Preload("User").Limit(result.Per).Offset((result.Page - 1) * result.Per).Find(&feedback)
 	qc.Count(&result.Total)
 	result.Data = feedback
 
