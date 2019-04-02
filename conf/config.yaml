@@ -1,9 +1,11 @@
+
+gormlog: true
+
 mysql:
   username: "root"
   password: "8080"
-  addr: "www.xhxblog.cn:3306"
-  name: "bysj"
-gormlog: true
+  addr: "127.0.0.1:3306"
+  name: "bysj_test"
 
 redis:
   password: ""
