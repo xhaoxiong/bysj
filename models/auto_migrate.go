@@ -32,7 +32,7 @@ func autoMigrate(db *gorm.DB) {
 }
 
 func Syncdb() {
-	//autoMigrate()
+	autoMigrate(DB.Mysql)
 	CreateDB()
 	InitMysql()
 
