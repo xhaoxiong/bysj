@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/25
 *@Description: CREATE GO FILE repositories
-*/
+ */
 package repositories
 
 import (
@@ -44,7 +44,7 @@ func (this *PayRecordRepositories) List(result *models.PagePayRecordResult) {
 		result.Page = 1
 	}
 	qc.Count(&result.Total)
-	qs.Limit(result.Per).Offset((result.Page - 1) * result.Per).Find(&record)
+	qs.Order("created_at desc").Limit(result.Per).Offset((result.Page - 1) * result.Per).Find(&record)
 	result.Data = record
 }
 
