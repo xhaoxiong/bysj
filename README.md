@@ -8,6 +8,10 @@
 
 ##### 主要技术:微信小程序(前台客户端),vuejs(脚手架后台管理端),iris(golang1.12)+gorm+jwt,配置文件viper热加载,
 
+##### 小程序部分
+
+![image](https://github.com/xhaoxiong/bysj/blob/master/1554730057592.gif)
+
 ##### 前后台后端项目目录
 
 ```
