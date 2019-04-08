@@ -10,7 +10,7 @@
 
 ##### 小程序部分
 
-![image](https://github.com/xhaoxiong/bysj/blob/master/1554730057592.gif)
+![image](https://github.com/xhaoxiong/bysj/blob/master/1554730786136.gif)
 
 ##### 前后台后端项目目录
 
