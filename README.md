@@ -12,6 +12,8 @@
 
 ![image](https://github.com/xhaoxiong/bysj/blob/master/1554730786136.gif)
 
+##### <a href="http://123.207.1.120:9018/admin#/login">后台部分(admin/admin)</a>
+
 ##### 前后台后端项目目录
 
 ```
