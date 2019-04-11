@@ -59,9 +59,9 @@ func GetJWT() *jwtmiddleware.Middleware {
 				strings.Contains(ctx.Request().RequestURI, "/auth/generate/token") ||
 				strings.Contains(ctx.Request().RequestURI, "/api/admin/auth/login") ||
 				strings.Contains(ctx.Request().RequestURI, "/hotel/city/check") ||
-				strings.Contains(ctx.Request().RequestURI, "/admin") {
+				strings.Contains(ctx.Request().RequestURI, "/admin") ||
+				strings.Contains(ctx.Request().RequestURI, "/hotel/search") {
 				ctx.Next()
-
 			} else {
 				result := make(map[string]interface{})
 				result["msg"] = "认证失败"
