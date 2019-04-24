@@ -54,7 +54,7 @@ func (this *DashBoardRepositories) AmountFlow() (allAmount int) {
 
 //最近七日订单成交量
 func (this *DashBoardRepositories) OrderTrend(orderVolume *[]models.OrderVolume) {
-	d := 8 * 24
+	d := 7 * 24
 	s, _ := time.ParseDuration("-" + cast.ToString(d) + "h")
 	date := time.Now().Add(s).Format("2006-01-02")
 	this.db.Where("date >=?", date).Order("date asc").Find(&orderVolume)

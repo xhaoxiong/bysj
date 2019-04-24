@@ -2,7 +2,7 @@
 *@Author: haoxiongxiao
 *@Date: 2019/3/18
 *@Description: CREATE GO FILE services
-*/
+ */
 package services
 
 import (
@@ -23,6 +23,9 @@ func SyncDashBoard() {
 
 		orderVolume.Date = yesterDay
 		orderVolume.Volume = orderTotal
+		if err := models.GetMysqlDB().Where("date = ?", time.Now().Format("2006-01-02")).First(&models.OrderVolume{}).Error; err == nil {
+			return err
+		}
 
 		if err := tx.Create(&orderVolume).Error; err != nil {
 			tx.Rollback()

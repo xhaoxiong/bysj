@@ -9,6 +9,7 @@ import (
 	"bysj/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"log"
 )
 
 type OrderRepositories struct {
@@ -41,7 +42,7 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 		qs = qs.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
 		qc = qc.Where("order_number like ? or room_info like ? or hotel_item like ?", s, s, s)
 	}
-
+	log.Println(result.UserId)
 	if result.UserId != 0 {
 		qs = qs.Where("user_id = ?", result.UserId)
 	}
@@ -53,16 +54,16 @@ func (this *OrderRepositories) List(result *models.PageResult) {
 
 func (this *OrderRepositories) Insert(order *models.Order) error {
 	u := models.User{}
-	if err := models.GetMysqlDB().Where("id = ?", order.UserId).First(&u).Error; err != nil || u.IsBind != 1 {
+	if err := this.db.Where("id = ?", order.UserId).First(&u).Error; err != nil || u.IsBind != 1 {
 		return err
 	}
 
 	fmt.Println("创建订单")
-	if err := models.GetMysqlDB().Create(order).Error; err != nil {
+	if err := this.db.Create(order).Error; err != nil {
 		return err
 	}
 
-	models.GetMysqlDB().Where("id = ?", order.UserId).First(&u)
+	this.db.Where("id = ?", order.UserId).First(&u)
 	order.User = &u
 
 	return nil
