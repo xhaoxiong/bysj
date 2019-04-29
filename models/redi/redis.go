@@ -2,15 +2,15 @@
 *@Author: haoxiongxiao
 *@Date: 2019/2/3
 *@Description: CREATE GO FILE redis
-*/
+ */
 package redi
 
 import (
 	"bysj/models"
-	"github.com/lexkong/log"
-	"github.com/garyburd/redigo/redis"
 	"encoding/json"
 	"errors"
+	"github.com/garyburd/redigo/redis"
+	"github.com/lexkong/log"
 )
 
 func Set(k, v string) {

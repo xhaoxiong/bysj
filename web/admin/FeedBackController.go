@@ -28,7 +28,10 @@ func (this *FeedBackController) PostCreate() {
 		this.ReturnJson(10001, "反馈失败")
 		return
 	}
-
+	if feedback.Content == "" {
+		this.ReturnJson(10001, "反馈失败")
+		return
+	}
 	if err := this.Service.Create(&feedback); err != nil {
 		this.ReturnJson(10001, "反馈失败")
 		return
